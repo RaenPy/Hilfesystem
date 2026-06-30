@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hilfesystem - Zahlung verausgaben</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header navbar">
+            <div class="logo">at:las</div>
+            <div class="header-icons">
+                <button class="icon-button" aria-label="Darstellung umschalten">◐</button>
+                <button class="icon-button" aria-label="Hilfe">?</button>
+                <button class="icon-button" aria-label="Benutzerkonto">♙</button>
+            </div>
+        </header>
+
+        <div class="main-wrapper">
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb app-breadcrumb">
+                    <a href="#">Startseite</a> /
+                    <a href="#">Erasmus</a> /
+                    <a href="#">Projektübersicht</a> /
+                    <a href="#">Kontoverwaltung</a> /
+                    <span>Zahlung verausgaben</span>
+                </nav>
+
+                <h1>Zahlung verausgaben</h1>
+
+                <!-- Section: Zahlungspartner -->
+                <section class="form-section" data-section="zahlungspartner">
+                    <div class="section-header">
+                        <h2>Zahlungspartner</h2>
+                        <button class="section-help-btn" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                <text x="10" y="14" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="typ">Typ</label>
+                            <select id="typ" class="form-select">
+                                <option>Natürliche Person</option>
+                                <option>Unternehmen</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="anrede">Anrede</label>
+                            <select id="anrede" class="form-select">
+                                <option>Ohne</option>
+                                <option>Frau</option>
+                                <option>Herr</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vorname">Vorname</label>
+                            <input type="text" id="vorname" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nachname">Nachname</label>
+                            <input type="text" id="nachname" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-row address-row">
+                        <div class="form-group">
+                            <label for="strasse">Straße</label>
+                            <input type="text" id="strasse" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="hausnummer">Hausnummer</label>
+                            <input type="text" id="hausnummer" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="postleitzahl">Postleitzahl</label>
+                            <input type="text" id="postleitzahl" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="ort">Ort</label>
+                            <input type="text" id="ort" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-check checkbox-group">
+                        <input type="checkbox" id="wohnsitz" class="form-check-input" checked>
+                        <label for="wohnsitz" class="form-check-label">Wohnhaft in Deutschland</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="land">Land</label>
+                        <select id="land" class="form-select">
+                            <option>Land auswählen</option>
+                            <option>Deutschland</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="iban">IBAN</label>
+                            <input type="text" id="iban" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="bic">BIC (optional)</label>
+                            <input type="text" id="bic" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="konto">Abweichender Kontoinhaber (optional)</label>
+                        <input type="text" id="konto" class="form-control">
+                    </div>
+
+                    <div class="form-check checkbox-group">
+                        <input type="checkbox" id="honorar" class="form-check-input" checked>
+                        <label for="honorar" class="form-check-label">Honorarzahlung</label>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group input-help-group">
+                            <label for="steuernr">Steuer-ID</label>
+                            <div class="input-with-help">
+                                <input type="text" id="steuernr" class="form-control" placeholder="-------">
+                                <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuer-ID">i</button>
+                            </div>
+                            <div class="inline-help" style="display: none;">
+                                <p>11-stellige Steueridentifikations-nummer, nur Ziffern, ohne Leerzeichen, steht z.B. auf Ihrem Steuerbescheid oder einer Lohnabrechnung.</p>
+                                <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="geburtsdatum">Geburtsdatum</label>
+                            <input type="date" id="geburtsdatum" class="form-control">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Zahlungsdaten -->
+                <section class="form-section" data-section="zahlungsdaten">
+                    <div class="section-header">
+                        <h2>Zahlungsdaten</h2>
+                        <button class="section-help-btn" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                <text x="10" y="14" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="betrag">Auszahlungsbetrag</label>
+                            <input type="text" id="betrag" class="form-control" value="0,00 €">
+                        </div>
+                        <div class="form-group">
+                            <label for="faellig">Fällig am</label>
+                            <input type="text" id="faellig" class="form-control" value="25.03.2026">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="verwendung">Verwendungszweck</label>
+                        <input type="text" id="verwendung" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vermerkt">Interner Vermerkt</label>
+                        <input type="text" id="vermerkt" class="form-control">
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <div class="form-group">
+                        <label for="kommentar">Kommentar (optional)</label>
+                        <textarea id="kommentar" class="form-control large-textarea" rows="3"></textarea>
+                        <small class="char-counter">(1000 Zeichen)</small>
+                    </div>
+                </section>
+
+                <!-- Section: Anhänge -->
+                <section class="form-section" data-section="anhaenge">
+                    <div class="section-header">
+                        <h2>Anhänge</h2>
+                        <button class="section-help-btn" data-section="anhaenge" aria-label="Hilfe für Anhänge">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                <text x="10" y="14" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <p class="section-note">
+                        Hier können Sie die Rechnungsdokumente hochladen. Max. 10 Anhänge, max 2,8 MB pro Anhang, zulässige Dateiformate: PDF, JPG, PNG.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="kommentar-anhang">Kommentar (optional)</label>
+                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3"></textarea>
+                        <small class="char-counter">(1000 Zeichen)</small>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-outline-secondary">Datei auswählen</button>
+                        <span class="drop-hint">oder hierher ziehen</span>
+                    </div>
+                </section>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button class="btn btn-primary">Richtigkeit der Daten bestätigen</button>
+                    <button class="btn btn-secondary">Abbrechen</button>
+                </div>
+            </main>
+
+            <!-- Help Sidebar -->
+            <aside class="help-sidebar hidden" id="help-sidebar">
+                <h2 class="help-sidebar-title">Hilfe für dieses Formular</h2>
+                <div class="help-content" id="help-content">
+                    <!-- Zahlungspartner Help -->
+                    <div class="help-section-card" id="help-zahlungspartner" data-section="zahlungspartner" style="display: none;">
+                        <div class="help-card-header">
+                            <h4>Zahlungspartner</h4>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">i</button>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Typ</h5>
+                            <p>Eine natürliche Person ist ein Mensch. Ein Mensch kann Rechte und Pflichten haben, ist Träger von Rechten und Pflichten. Sein Vermögen wird für die Verbindlichkeiten der Person haftbar, beispielsweise einer Mutter, ein Schüler und ein Nachbar.</p>
+                            <p>Eine juristische Person ist eine Organisation oder Firma, an rechtlich wie die Person behandelt wird. Sie kann Verträge abschließen, Eigentum besitzt und Steuern zahlen.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Persönliche Angaben</h5>
+                            <p>Schreiben Sie die Angaben so, wie sie in offiziellen Dokumenten stehen.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>IBAN</h5>
+                            <p>22-stellige Nummer, bestehend aus Ländercode, Prüfziffer, Bankleitzahl, Kontonummer (bis zu 10 Stellen, ggf. Nutzerdaten werden mit Nullen aufgefüllt).</p>
+                            <p>Beide der Kontoinhaber vom Auftraggeber abweichen, müssen wir wissen woher die Anweisung unter Umstanden in Ihrer Beiträge zu erfragen.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Steuer-ID</h5>
+                            <p>Die Steuer-Identifikationsnummer (Steuer-ID) ist eine persönliche 11-stellige Zahl, die ein Bundesfinanztamt für Steuern vergeben wird und die Person eindeutig identifiziert zur Steuerveranlagung und zum Steuerbescheid oder Lebenszeitarbeitskonten.</p>
+                        </div>
+                    </div>
+
+                    <!-- Zahlungsdaten Help -->
+                    <div class="help-section-card" id="help-zahlungsdaten" data-section="zahlungsdaten" style="display: none;">
+                        <div class="help-card-header">
+                            <h4>Zahlungsdaten</h4>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">i</button>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Auszahlungsdaten</h5>
+                            <p>Hier geben Sie Ihren individuellen Auszahlungsbetrag für Ihr Projekt ein, sowie ein Fälligkeitsdatum an dem der Betrag ausgezahlt werden soll.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Verwendungszweck</h5>
+                            <p>Bitte geben Sie außerdem einen möglichst genauen Verwendungszweck für die Auszahlung an, sowie Sie ihn in der Antragsstellung auch angeben haben.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Interner Vermerkt</h5>
+                            <p>Die Angabe eines internen Vermerks kann spätere Rückfragen und Eingrenzungen eines Problemfalls deutlich erleichtern.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Kommentar</h5>
+                            <p>Geben Sie hier noch einen optionalen Kommentar ein, um Ihren Vorgang noch besser zu schildern oder vorab Probleme mitzuteilen. Dies kann unter Umständen die Bearbeitung beschleunigen und Rückfragen unsererseits reduzieren.</p>
+                        </div>
+                    </div>
+
+                    <!-- Anhänge Help -->
+                    <div class="help-section-card" id="help-anhaenge" data-section="anhaenge" style="display: none;">
+                        <div class="help-card-header">
+                            <h4>Anhänge</h4>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">i</button>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Dateianhänge</h5>
+                            <p>Anhänge in Form von Text- und Bilddokumenten ermöglichen eine genauere Zuordnung und ein besseres Verständnis Ihres individuellen Sachverhalts.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Dateiformat</h5>
+                            <p>Sollten Sie Probleme haben, Ihre Dateien ins richtige Format zu bringen, schauen Sie gerne <a href="#">hier</a>. Dort können Sie ohne großen Aufwand konvertieren und komprimieren.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <a href="#">Support</a>
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutz</a>
+            <a href="#">Barrierefreiheit</a>
+            <a href="#">FAQ</a>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
