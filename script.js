@@ -35,21 +35,24 @@ class HelpSystem {
             });
         });
 
-        // Gleiche Toggle-Funktion wie der section-help-btn (zweiter Weg,
-        // um die Bereichshilfe zu schließen/öffnen)
+        // Schlichter X-Button: schließt die Bereichshilfe immer, kein Toggle
         this.helpCardCloseBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const card = btn.closest('.help-card');
-                this.toggleHelpSection(card.getAttribute('data-section'));
+                this.closeHelpSection(card.getAttribute('data-section'));
             });
         });
 
         // Inline help links open the full help card of the given section
+        // und springen dort direkt zum passenden Abschnitt (falls schon einer
+        // hinterlegt ist)
         this.helpLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = e.currentTarget.getAttribute('data-section');
                 this.openHelpSection(section);
+                const help = e.currentTarget.closest('.inline-help');
+                this.scrollHelpCardToTopic(section, this.getTopicFromHelp(help));
             });
         });
 
@@ -120,6 +123,14 @@ class HelpSystem {
     showInlineHelp(help, btn) {
         help.hidden = false;
         btn?.setAttribute('aria-expanded', 'true');
+
+        // Falls die Bereichshilfe der Sektion bereits offen ist, direkt zum
+        // passenden Abschnitt scrollen (no-op, falls noch keiner hinterlegt
+        // ist oder die Bereichshilfe geschlossen ist)
+        const section = help.closest('.form-section')?.getAttribute('data-section');
+        if (section) {
+            this.scrollHelpCardToTopic(section, this.getTopicFromHelp(help));
+        }
     }
 
     hideInlineHelp(help, btn) {
@@ -133,6 +144,32 @@ class HelpSystem {
         } else {
             this.hideInlineHelp(help, btn);
         }
+    }
+
+    // Themen-Kürzel aus der id einer Mikrohilfe ableiten, z.B.
+    // "microhelp-typ" -> "typ". Passende Abschnitte in der Bereichshilfe
+    // tragen dasselbe Kürzel als data-topic-Attribut.
+    getTopicFromHelp(help) {
+        const prefix = 'microhelp-';
+        return help?.id?.startsWith(prefix) ? help.id.slice(prefix.length) : null;
+    }
+
+    // Scrollt die (bereits offene) Bereichshilfe einer Sektion so, dass der
+    // Abschnitt mit dem passenden data-topic ganz oben steht. Tut nichts,
+    // wenn die Bereichshilfe geschlossen ist oder noch kein Abschnitt mit
+    // diesem Thema hinterlegt wurde (wird nach und nach ergänzt).
+    scrollHelpCardToTopic(section, topic) {
+        if (!topic) {
+            return;
+        }
+
+        const card = this.getHelpCard(section);
+        if (!card || card.hidden) {
+            return;
+        }
+
+        const target = card.querySelector(`[data-topic="${topic}"]`);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     getHelpCard(section) {
@@ -177,9 +214,91 @@ class HelpSystem {
     }
 }
 
+// Parst eine manuell eingetippte Formatvorlage TT.MM.JJJJ in ein
+// ISO-Datum (yyyy-mm-dd). Gibt null zurück bei leerem/ungültigem Text
+// oder nicht existierenden Daten (z.B. 31.02.2026).
+function parseGermanDate(text) {
+    const match = text.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if (!match) {
+        return null;
+    }
+
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    const year = Number(match[3]);
+    const date = new Date(year, month - 1, day);
+
+    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+        return null;
+    }
+
+    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+// Koppelt ein sichtbares Text-Anzeigefeld mit einem unsichtbaren echten
+// type="date"-Feld: kein natives Browser-Icon kann auf dem Textfeld
+// auftauchen, die Datumsauswahl läuft trotzdem nativ über showPicker()
+// auf dem versteckten Feld. Löst das browserabhängige Icon-Chaos endgültig.
+// Manuelle Eingabe im Format TT.MM.JJJJ (siehe placeholder) bleibt möglich
+// und wird beim Verlassen des Felds mit dem echten Datumsfeld synchronisiert.
+function setupDateFieldControls() {
+    document.querySelectorAll('.input-with-help--date').forEach(wrapper => {
+        const display = wrapper.querySelector('input[type="text"].form-control');
+        const nativeInput = wrapper.querySelector('.native-date-input');
+        const clearBtn = wrapper.querySelector('.field-clear-btn');
+        const calendarBtn = wrapper.querySelector('.field-calendar-btn');
+
+        if (!display || !nativeInput) {
+            return;
+        }
+
+        const formatter = new Intl.DateTimeFormat('de-DE');
+
+        const syncDisplay = () => {
+            if (nativeInput.value) {
+                const [y, m, d] = nativeInput.value.split('-').map(Number);
+                display.value = formatter.format(new Date(y, m - 1, d));
+            } else {
+                display.value = '';
+            }
+
+            if (clearBtn) {
+                clearBtn.hidden = !nativeInput.value;
+            }
+        };
+
+        nativeInput.addEventListener('change', syncDisplay);
+
+        // Manuelle Eingabe: beim Verlassen des Felds parsen. Bei gültigem
+        // Datum wird das echte Feld übernommen, sonst zeigt syncDisplay()
+        // wieder den letzten gültigen Stand (oder die Formatvorlage).
+        display.addEventListener('change', () => {
+            const text = display.value.trim();
+            nativeInput.value = text ? (parseGermanDate(text) ?? nativeInput.value) : '';
+            syncDisplay();
+        });
+
+        calendarBtn?.addEventListener('click', () => {
+            if (typeof nativeInput.showPicker === 'function') {
+                nativeInput.showPicker();
+            } else {
+                nativeInput.focus();
+            }
+        });
+
+        clearBtn?.addEventListener('click', () => {
+            nativeInput.value = '';
+            syncDisplay();
+            display.focus();
+        });
+
+        syncDisplay();
+    });
+}
+
 function setDefaultDueDate() {
-    const faellig = document.getElementById('faellig');
-    if (!faellig || faellig.value) {
+    const nativeInput = document.getElementById('faellig-value');
+    if (!nativeInput || nativeInput.value) {
         return;
     }
 
@@ -187,11 +306,12 @@ function setDefaultDueDate() {
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
-    faellig.value = `${yyyy}-${mm}-${dd}`;
+    nativeInput.value = `${yyyy}-${mm}-${dd}`;
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     new HelpSystem();
     setDefaultDueDate();
+    setupDateFieldControls();
 });

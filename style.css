@@ -70,6 +70,11 @@ body {
     line-height: 1;
 }
 
+.icon-button svg {
+    width: 1.125em;
+    height: 1.125em;
+}
+
 .main-wrapper {
     width: min(100%, 58.75em);
     margin: 0 auto;
@@ -129,14 +134,7 @@ p {
     line-height: 1.2;
 }
 
-.section-title-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-}
-
 .section-help-btn,
-.help-card-close-btn,
 .micro-help-btn {
     width: 1.625em;
     height: 1.625em;
@@ -153,16 +151,37 @@ p {
     line-height: 1;
 }
 
-.section-help-btn svg,
-.help-card-close-btn svg {
+.section-help-btn svg {
     width: 1em;
     height: 1em;
 }
 
 .section-help-btn:hover,
-.help-card-close-btn:hover,
 .micro-help-btn:hover {
     border-color: var(--atlas-link);
+    color: var(--atlas-link);
+}
+
+/* Schlichter X-Button ohne Kreis/Rahmen – eindeutig als "Schließen" statt
+   als Toggle-Icon erkennbar, im Gegensatz zum section-help-btn. */
+.help-card-close-btn {
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0;
+    border: 0;
+    background: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.help-card-close-btn svg {
+    width: 0.875em;
+    height: 0.875em;
+}
+
+.help-card-close-btn:hover {
     color: var(--atlas-link);
 }
 
@@ -262,19 +281,10 @@ label {
     padding-right: 2.625em;
 }
 
-/* form-select und input[type=date] haben schon ein natives Icon rechts
-   (Pfeil bzw. Kalender) – zusätzlicher Platz fürs Mikrohilfe-Icon links
-   davon, statt es zu überlagern. Gleicher Abstand für beide Feldtypen. */
-.input-with-help .form-select,
-.input-with-help input[type="date"] {
+/* form-select hat schon ein natives Pfeil-Icon rechts – zusätzlicher
+   Platz fürs Mikrohilfe-Icon links davon, statt es zu überlagern. */
+.input-with-help .form-select {
     padding-right: 4.25em;
-}
-
-/* Normiert die Innenabstände des nativen Kalender-Icons (Chrome/Safari),
-   damit seine Position vorhersehbar bleibt statt browserabhängig zu
-   schwanken. */
-.input-with-help input[type="date"]::-webkit-calendar-picker-indicator {
-    margin-right: 0;
 }
 
 .micro-help-btn {
@@ -297,9 +307,67 @@ label {
     transform: translateY(-50%);
 }
 
-.input-with-help .form-select + .micro-help-btn,
-.input-with-help input[type="date"] + .micro-help-btn {
+.input-with-help .form-select + .micro-help-btn {
     right: 2.75em;
+}
+
+/* Datumsfeld: das sichtbare Feld ist ein normales Textfeld (zeigt das
+   formatierte Datum an), das echte type="date"-Feld ist unsichtbar und
+   dient nur der nativen Datumsauswahl (per showPicker() über den
+   Kalender-Button). So kann kein natives Browser-Icon mehr auftauchen –
+   alle drei Icons (Clear, i, Kalender) sind vollständig eigene Elemente
+   mit garantiert gleichem Abstand, browserunabhängig. */
+.native-date-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.input-with-help--date .form-control {
+    padding-right: 6em;
+}
+
+.field-icon-group {
+    position: absolute;
+    right: 0.625em;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.field-icon-group .micro-help-btn {
+    position: static;
+    top: auto;
+    right: auto;
+    transform: none;
+}
+
+.field-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25em;
+    height: 1.25em;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #6c757d;
+}
+
+.field-icon-btn:hover {
+    color: var(--atlas-link);
+}
+
+.field-clear-btn[hidden] {
+    display: none;
 }
 
 .inline-help {
@@ -398,12 +466,18 @@ label {
     margin-top: 2.5em;
 }
 
-/* Bereichshilfe: standardmäßig ein normaler Block direkt unter dem
-   Sektionsinhalt (funktioniert ohne JS/CSS-Unterstützung und auf
-   schmalen Bildschirmen, wo neben der Sektion kein Platz ist). */
+/* Bereichshilfe: standardmäßig ein normaler Block direkt unter der
+   Sektions-Überschrift (funktioniert ohne JS/CSS-Unterstützung und auf
+   schmalen Bildschirmen, wo neben der Sektion kein Platz ist). Feste
+   Höhe (~3 Formularfelder inkl. Label) statt unbegrenztem Wachstum, damit
+   man auf Tablet/Phone in der Hilfe lesen kann, während man weiter unten
+   im Formular arbeitet, ohne die ganze Seite hoch/runter scrollen zu
+   müssen – der Inhalt scrollt stattdessen innerhalb der Karte selbst. */
 .help-card {
-    margin: 1.5em 0 0;
+    margin: 1em 0 1.5em;
     padding: 1.125em 1.375em;
+    max-height: 16em;
+    overflow-y: auto;
     background: var(--atlas-bg);
     border-radius: var(--atlas-radius);
 }
@@ -428,6 +502,9 @@ label {
         left: 100%;
         width: 26.25em;
         margin: 0 0 0 0.5em;
+        /* Die feste max-height fürs mobile Layout gilt hier nicht – die
+           Karte soll wieder exakt die Sektionshöhe ausfüllen (s.o.). */
+        max-height: none;
         padding: 1.125em 1.375em;
         overflow-y: auto;
         background: #ffffff;

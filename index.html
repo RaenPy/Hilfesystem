@@ -32,7 +32,12 @@
             <div class="header-icons">
                 <button class="icon-button" aria-label="Darstellung umschalten">◐</button>
                 <button class="icon-button" aria-label="Hilfe">?</button>
-                <button class="icon-button" aria-label="Benutzerkonto">♙</button>
+                <button class="icon-button" aria-label="Benutzerkonto">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="7.5" r="3.25" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M4 17c0-4.5 2.9-6.7 6-6.7s6 2.2 6 6.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                </button>
             </div>
         </header>
 
@@ -53,10 +58,7 @@
                 <!-- Section: Zahlungspartner -->
                 <section class="form-section" data-section="zahlungspartner">
                     <div class="section-header">
-                        <div class="section-title-group">
-                            <h2>Zahlungspartner</h2>
-                            <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Zahlungspartner" aria-expanded="false" aria-controls="microhelp-zahlungspartner">i</button>
-                        </div>
+                        <h2>Zahlungspartner</h2>
                         <button class="section-help-btn" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" aria-expanded="false" aria-controls="help-zahlungspartner">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
@@ -66,10 +68,53 @@
                         </button>
                     </div>
 
-                    <div class="inline-help" id="microhelp-zahlungspartner" hidden>
-                        <p>Die Daten für den Zahlungspartner müssen vollständig ausgefüllt werden.</p>
-                        <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
-                    </div>
+                    <!-- Bereichshilfe: Zahlungspartner -->
+                    <aside class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" hidden>
+                        <div class="help-card-header">
+                            <h4>Zahlungspartner</h4>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="help-subsection">
+                            <p>Die Daten für den Zahlungspartner müssen vollständig ausgefüllt werden.</p>
+                        </div>
+
+                        <div class="help-subsection" data-topic="typ">
+                            <h5>Typ</h5>
+                            <p>Eine natürliche Person ist ein Mensch. Ein Mensch kann Rechte und Pflichten haben, ist Träger von Rechten und Pflichten. Sein Vermögen wird für die Verbindlichkeiten der Person haftbar, beispielsweise einer Mutter, ein Schüler und ein Nachbar.</p>
+                            <p>Eine juristische Person ist eine Organisation oder Firma, an rechtlich wie die Person behandelt wird. Sie kann Verträge abschließen, Eigentum besitzt und Steuern zahlen.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Persönliche Angaben</h5>
+                            <p>Schreiben Sie die Angaben so, wie sie in offiziellen Dokumenten stehen.</p>
+                        </div>
+
+                        <div class="help-subsection" data-topic="wohnsitz">
+                            <h5>Wohnhaft in Deutschland</h5>
+                            <p>Die Auswahl "Wohnhaft in Deutschland" ist standardmäßig erfasst und bedeutet, dass die PLZ 5-stellig zu erfassen ist sowie eine IBAN mit 22 Stellen (2-stelliger Ländercode DE und 20 Ziffern).</p>
+                            <p>Diese Auswahl ist abzuwählen, wenn der Zahlungspartner keine Adresse in Deutschland angegeben hat. Ist diese Auswahl nicht angewählt, kann das entsprechende Land erfasst werden.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>IBAN</h5>
+                            <p>22-stellige Nummer, bestehend aus Ländercode, Prüfziffer, Bankleitzahl, Kontonummer (bis zu 10 Stellen, ggf. Nutzerdaten werden mit Nullen aufgefüllt).</p>
+                            <p>Beide der Kontoinhaber vom Auftraggeber abweichen, müssen wir wissen woher die Anweisung unter Umstanden in Ihrer Beiträge zu erfragen.</p>
+                        </div>
+
+                        <div class="help-subsection" data-topic="steuernr">
+                            <h5>Steuer-ID</h5>
+                            <p>Die Steuer-Identifikationsnummer (Steuer-ID) ist eine persönliche 11-stellige Zahl, die ein Bundesfinanztamt für Steuern vergeben wird und die Person eindeutig identifiziert zur Steuerveranlagung und zum Steuerbescheid oder Lebenszeitarbeitskonten.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
+                        </div>
+                    </aside>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -184,45 +229,27 @@
                         </div>
                         <div class="form-group">
                             <label for="geburtsdatum">Geburtsdatum</label>
-                            <input type="date" id="geburtsdatum" class="form-control">
+                            <div class="input-with-help input-with-help--date">
+                                <input type="text" id="geburtsdatum" class="form-control" placeholder="TT.MM.JJJJ" inputmode="numeric" autocomplete="off">
+                                <input type="date" id="geburtsdatum-value" class="native-date-input" tabindex="-1" aria-hidden="true">
+                                <div class="field-icon-group">
+                                    <button class="field-icon-btn field-clear-btn" type="button" data-clear-target="geburtsdatum-value" aria-label="Datum löschen">
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                    <button class="field-icon-btn field-calendar-btn" type="button" data-picker-target="geburtsdatum-value" aria-label="Kalender öffnen">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <rect x="1.5" y="2.5" width="13" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                                            <path d="M1.5 6H14.5" stroke="currentColor" stroke-width="1.3"/>
+                                            <path d="M4.5 1V3.5M11.5 1V3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Bereichshilfe: Zahlungspartner -->
-                    <aside class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" hidden>
-                        <div class="help-card-header">
-                            <h4>Zahlungspartner</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                    <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
-                                    <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Typ</h5>
-                            <p>Eine natürliche Person ist ein Mensch. Ein Mensch kann Rechte und Pflichten haben, ist Träger von Rechten und Pflichten. Sein Vermögen wird für die Verbindlichkeiten der Person haftbar, beispielsweise einer Mutter, ein Schüler und ein Nachbar.</p>
-                            <p>Eine juristische Person ist eine Organisation oder Firma, an rechtlich wie die Person behandelt wird. Sie kann Verträge abschließen, Eigentum besitzt und Steuern zahlen.</p>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Persönliche Angaben</h5>
-                            <p>Schreiben Sie die Angaben so, wie sie in offiziellen Dokumenten stehen.</p>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>IBAN</h5>
-                            <p>22-stellige Nummer, bestehend aus Ländercode, Prüfziffer, Bankleitzahl, Kontonummer (bis zu 10 Stellen, ggf. Nutzerdaten werden mit Nullen aufgefüllt).</p>
-                            <p>Beide der Kontoinhaber vom Auftraggeber abweichen, müssen wir wissen woher die Anweisung unter Umstanden in Ihrer Beiträge zu erfragen.</p>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Steuer-ID</h5>
-                            <p>Die Steuer-Identifikationsnummer (Steuer-ID) ist eine persönliche 11-stellige Zahl, die ein Bundesfinanztamt für Steuern vergeben wird und die Person eindeutig identifiziert zur Steuerveranlagung und zum Steuerbescheid oder Lebenszeitarbeitskonten.</p>
-                        </div>
-                    </aside>
                 </section>
 
                 <!-- Section: Zahlungsdaten -->
@@ -238,6 +265,48 @@
                         </button>
                     </div>
 
+                    <!-- Bereichshilfe: Zahlungsdaten -->
+                    <aside class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten" hidden>
+                        <div class="help-card-header">
+                            <h4>Zahlungsdaten</h4>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Auszahlungsdaten</h5>
+                            <p>Hier geben Sie Ihren individuellen Auszahlungsbetrag für Ihr Projekt ein, sowie ein Fälligkeitsdatum an dem der Betrag ausgezahlt werden soll.</p>
+                        </div>
+
+                        <div class="help-subsection" data-topic="faellig">
+                            <h5>Fällig am</h5>
+                            <p>Hier ist die Fälligkeit/der Auszahlungszeitpunkt gemäß Rechnung/Zahlungsaufforderung zu erfassen. Dieses Datum muss in der Zukunft liegen.</p>
+                            <p>Die Fälligkeit darf nicht im nächsten Jahr oder mehr als 6 Monate in der Zukunft liegen.</p>
+                        </div>
+
+                        <div class="help-subsection" data-topic="verwendung">
+                            <h5>Verwendungszweck</h5>
+                            <p>Bitte geben Sie außerdem einen möglichst genauen Verwendungszweck für die Auszahlung an, sowie Sie ihn in der Antragsstellung auch angeben haben.</p>
+                        </div>
+
+                        <div class="help-subsection" data-topic="vermerkt">
+                            <h5>Interner Vermerk</h5>
+                            <p>Die Angabe eines internen Vermerks kann spätere Rückfragen und Eingrenzungen eines Problemfalls deutlich erleichtern.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <h5>Kommentar</h5>
+                            <p>Geben Sie hier noch einen optionalen Kommentar ein, um Ihren Vorgang noch besser zu schildern oder vorab Probleme mitzuteilen. Dies kann unter Umständen die Bearbeitung beschleunigen und Rückfragen unsererseits reduzieren.</p>
+                        </div>
+
+                        <div class="help-subsection">
+                            <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
+                        </div>
+                    </aside>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="betrag">Auszahlungsbetrag</label>
@@ -245,9 +314,24 @@
                         </div>
                         <div class="form-group">
                             <label for="faellig">Fällig am</label>
-                            <div class="input-with-help">
-                                <input type="date" id="faellig" class="form-control">
-                                <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Fällig am" aria-expanded="false" aria-controls="microhelp-faellig">i</button>
+                            <div class="input-with-help input-with-help--date">
+                                <input type="text" id="faellig" class="form-control" placeholder="TT.MM.JJJJ" inputmode="numeric" autocomplete="off">
+                                <input type="date" id="faellig-value" class="native-date-input" tabindex="-1" aria-hidden="true">
+                                <div class="field-icon-group">
+                                    <button class="field-icon-btn field-clear-btn" type="button" data-clear-target="faellig-value" aria-label="Datum löschen">
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                    <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Fällig am" aria-expanded="false" aria-controls="microhelp-faellig">i</button>
+                                    <button class="field-icon-btn field-calendar-btn" type="button" data-picker-target="faellig-value" aria-label="Kalender öffnen">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <rect x="1.5" y="2.5" width="13" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                                            <path d="M1.5 6H14.5" stroke="currentColor" stroke-width="1.3"/>
+                                            <path d="M4.5 1V3.5M11.5 1V3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="inline-help" id="microhelp-faellig" hidden>
                                 <p>Hier ist die Fälligkeit/der Auszahlungszeitpunkt gemäß Rechnung/Zahlungsaufforderung zu erfassen. Dieses Datum muss in der Zukunft liegen.</p>
@@ -290,48 +374,12 @@
                         <small class="char-counter">(1000 Zeichen)</small>
                     </div>
 
-                    <!-- Bereichshilfe: Zahlungsdaten -->
-                    <aside class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten" hidden>
-                        <div class="help-card-header">
-                            <h4>Zahlungsdaten</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                    <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
-                                    <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Auszahlungsdaten</h5>
-                            <p>Hier geben Sie Ihren individuellen Auszahlungsbetrag für Ihr Projekt ein, sowie ein Fälligkeitsdatum an dem der Betrag ausgezahlt werden soll.</p>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Verwendungszweck</h5>
-                            <p>Bitte geben Sie außerdem einen möglichst genauen Verwendungszweck für die Auszahlung an, sowie Sie ihn in der Antragsstellung auch angeben haben.</p>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Interner Vermerkt</h5>
-                            <p>Die Angabe eines internen Vermerks kann spätere Rückfragen und Eingrenzungen eines Problemfalls deutlich erleichtern.</p>
-                        </div>
-
-                        <div class="help-subsection">
-                            <h5>Kommentar</h5>
-                            <p>Geben Sie hier noch einen optionalen Kommentar ein, um Ihren Vorgang noch besser zu schildern oder vorab Probleme mitzuteilen. Dies kann unter Umständen die Bearbeitung beschleunigen und Rückfragen unsererseits reduzieren.</p>
-                        </div>
-                    </aside>
                 </section>
 
                 <!-- Section: Anhänge -->
                 <section class="form-section" data-section="anhaenge">
                     <div class="section-header">
-                        <div class="section-title-group">
-                            <h2>Anhänge</h2>
-                            <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Anhänge" aria-expanded="false" aria-controls="microhelp-anhaenge">i</button>
-                        </div>
+                        <h2>Anhänge</h2>
                         <button class="section-help-btn" data-section="anhaenge" aria-label="Hilfe für Anhänge" aria-expanded="false" aria-controls="help-anhaenge">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
@@ -341,37 +389,19 @@
                         </button>
                     </div>
 
-                    <div class="inline-help" id="microhelp-anhaenge" hidden>
-                        <p>Evtl. über die Speicherung und die dauerhafte mögliche Einsicht?</p>
-                        <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="anhaenge">Bereichshilfe</a>.</p>
-                    </div>
-
-                    <p class="section-note">
-                        Hier können Sie die Rechnungsdokumente hochladen. Max. 10 Anhänge, max 2,8 MB pro Anhang, zulässige Dateiformate: PDF, JPG, PNG.
-                    </p>
-
-                    <div class="form-group">
-                        <label for="kommentar-anhang">Kommentar (optional)</label>
-                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3"></textarea>
-                        <small class="char-counter">(1000 Zeichen)</small>
-                    </div>
-
-                    <div class="button-group">
-                        <button class="btn btn-outline-secondary">Datei auswählen</button>
-                        <span class="drop-hint">oder hierher ziehen</span>
-                    </div>
-
                     <!-- Bereichshilfe: Anhänge -->
                     <aside class="help-card" id="help-anhaenge" data-section="anhaenge" aria-label="Hilfe für Anhänge" hidden>
                         <div class="help-card-header">
                             <h4>Anhänge</h4>
                             <button class="help-card-close-btn" aria-label="Hilfe schließen">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                    <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
-                                    <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
                             </button>
+                        </div>
+
+                        <div class="help-subsection">
+                            <p>Evtl. über die Speicherung und die dauerhafte mögliche Einsicht?</p>
                         </div>
 
                         <div class="help-subsection">
@@ -388,6 +418,22 @@
                             <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
                     </aside>
+
+                    <p class="section-note">
+                        Hier können Sie die Rechnungsdokumente hochladen. Max. 10 Anhänge, max 2,8 MB pro Anhang, zulässige Dateiformate: PDF, JPG, PNG.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="kommentar-anhang">Kommentar (optional)</label>
+                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3"></textarea>
+                        <small class="char-counter">(1000 Zeichen)</small>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-outline-secondary">Datei auswählen</button>
+                        <span class="drop-hint">oder hierher ziehen</span>
+                    </div>
+
                 </section>
 
                 <!-- Form Actions -->
