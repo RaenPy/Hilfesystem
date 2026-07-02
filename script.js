@@ -1,56 +1,50 @@
 // Help System
 class HelpSystem {
     constructor() {
-        this.helpSidebar = document.querySelector('.help-sidebar');
         this.sectionHelpBtns = document.querySelectorAll('.section-help-btn');
         this.helpCardCloseBtns = document.querySelectorAll('.help-card-close-btn');
         this.helpLinks = document.querySelectorAll('.help-link');
-        this.steuerId = document.getElementById('steuernr');
-        this.inlineHelp = this.steuerId?.closest('.form-group')?.querySelector('.inline-help');
-        this.microHelpBtn = document.querySelector('.micro-help-btn');
-        this.formSections = document.querySelectorAll('.form-section');
-        this.helpSectionCards = document.querySelectorAll('.help-section-card');
-        this.mainContent = document.querySelector('.main-content');
-        this.helpContent = document.querySelector('.help-content');
-        this.openSections = new Set(); // Track which sections are open
+        this.microHelpBtns = document.querySelectorAll('.micro-help-btn');
 
         this.init();
     }
 
     init() {
-        // Inline help - show on focus
-        if (this.steuerId) {
-            this.steuerId.addEventListener('focus', () => this.showInlineHelp());
-        }
+        // Jeder micro-help-btn steuert per aria-controls sein eigenes
+        // inline-help-Panel. Bewusst nur klickbar, nicht fokusgesteuert:
+        // Klick/Fokus auf das Feld selbst soll ausschließlich dessen
+        // native Funktion auslösen (Dropdown/Datepicker öffnen usw.), ohne
+        // gleichzeitig die Mikrohilfe mitzutriggern.
+        this.microHelpBtns.forEach(btn => {
+            const help = this.getInlineHelp(btn);
+            if (!help) {
+                return;
+            }
 
-        if (this.microHelpBtn) {
-            this.microHelpBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.showInlineHelp();
-                this.steuerId?.focus();
-            });
-        }
-
-        // Section help buttons - toggle help sidebar
-        this.sectionHelpBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                this.toggleInlineHelp(help, btn);
+            });
+        });
+
+        // Section help buttons - toggle the help card inside that section
+        this.sectionHelpBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 const section = e.currentTarget.getAttribute('data-section');
                 this.toggleHelpSection(section);
             });
         });
 
-        // Close buttons on each help card
-        this.helpCardCloseBtns.forEach((btn, index) => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const card = btn.closest('.help-section-card');
-                const section = card.getAttribute('data-section');
-                this.closeHelpSection(section);
+        // Gleiche Toggle-Funktion wie der section-help-btn (zweiter Weg,
+        // um die Bereichshilfe zu schließen/öffnen)
+        this.helpCardCloseBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const card = btn.closest('.help-card');
+                this.toggleHelpSection(card.getAttribute('data-section'));
             });
         });
 
-        // Inline help links
+        // Inline help links open the full help card of the given section
         this.helpLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -59,107 +53,145 @@ class HelpSystem {
             });
         });
 
-        // Close inline help when clicking elsewhere
+        // Klick außerhalb eines offenen Mikrohilfe-Panels (und außerhalb
+        // seines Toggle-Buttons/Feldes) schließt es wieder
         document.addEventListener('click', (e) => {
-            if (this.inlineHelp && !e.target.closest('.form-group')) {
-                this.hideInlineHelp();
-            }
+            document.querySelectorAll('.inline-help').forEach(help => {
+                if (help.hidden) {
+                    return;
+                }
+
+                const btn = this.getMicroHelpBtnFor(help);
+                const control = btn ? this.getAssociatedControl(btn) : null;
+
+                if (help.contains(e.target) || btn?.contains(e.target) || control === e.target) {
+                    return;
+                }
+
+                this.hideInlineHelp(help, btn);
+            });
         });
 
-        // Sync help section heights and positions with form sections
-        this.syncHeightsAndPositions();
-        window.addEventListener('resize', () => this.syncHeightsAndPositions());
-        this.mainContent.addEventListener('scroll', () => this.syncHeightsAndPositions());
+        // Escape closes whichever help panel currently has focus
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') {
+                return;
+            }
+
+            document.querySelectorAll('.inline-help').forEach(help => {
+                if (help.hidden) {
+                    return;
+                }
+
+                const btn = this.getMicroHelpBtnFor(help);
+                const control = btn ? this.getAssociatedControl(btn) : null;
+
+                if (!help.contains(document.activeElement) && document.activeElement !== control) {
+                    return;
+                }
+
+                this.hideInlineHelp(help, btn);
+                (control ?? btn)?.focus();
+            });
+
+            const openCard = document.activeElement?.closest('.help-card');
+            if (openCard) {
+                const section = openCard.getAttribute('data-section');
+                this.closeHelpSection(section);
+                this.getSectionHelpBtn(section)?.focus();
+            }
+        });
     }
 
-    showInlineHelp() {
-        if (this.inlineHelp) {
-            this.inlineHelp.style.display = 'block';
+    getInlineHelp(btn) {
+        const id = btn.getAttribute('aria-controls');
+        return id ? document.getElementById(id) : null;
+    }
+
+    getMicroHelpBtnFor(help) {
+        return help.id ? document.querySelector(`.micro-help-btn[aria-controls="${help.id}"]`) : null;
+    }
+
+    getAssociatedControl(btn) {
+        const wrapper = btn.closest('.input-with-help');
+        return wrapper?.querySelector('.form-control, .form-select, .form-check-input') ?? null;
+    }
+
+    showInlineHelp(help, btn) {
+        help.hidden = false;
+        btn?.setAttribute('aria-expanded', 'true');
+    }
+
+    hideInlineHelp(help, btn) {
+        help.hidden = true;
+        btn?.setAttribute('aria-expanded', 'false');
+    }
+
+    toggleInlineHelp(help, btn) {
+        if (help.hidden) {
+            this.showInlineHelp(help, btn);
+        } else {
+            this.hideInlineHelp(help, btn);
         }
     }
 
-    hideInlineHelp() {
-        if (this.inlineHelp) {
-            this.inlineHelp.style.display = 'none';
-        }
+    getHelpCard(section) {
+        return document.getElementById(`help-${section}`);
+    }
+
+    getSectionHelpBtn(section) {
+        return document.querySelector(`.section-help-btn[data-section="${section}"]`);
     }
 
     toggleHelpSection(section) {
-        if (this.openSections.has(section)) {
-            this.closeHelpSection(section);
-        } else {
+        const card = this.getHelpCard(section);
+        if (!card) {
+            return;
+        }
+
+        if (card.hidden) {
             this.openHelpSection(section);
+        } else {
+            this.closeHelpSection(section);
         }
     }
 
     openHelpSection(section) {
-        this.openSections.add(section);
-        this.updateHelpDisplay();
-        this.helpSidebar.classList.remove('hidden');
-        this.syncHeightsAndPositions();
-    }
-
-    closeHelpSection(section) {
-        this.openSections.delete(section);
-        this.updateHelpDisplay();
-
-        // Hide sidebar if no sections are open
-        if (this.openSections.size === 0) {
-            this.helpSidebar.classList.add('hidden');
-        } else {
-            this.syncHeightsAndPositions();
-        }
-    }
-
-    updateHelpDisplay() {
-        // Update visibility of all help cards
-        this.helpSectionCards.forEach(card => {
-            const section = card.getAttribute('data-section');
-            if (this.openSections.has(section)) {
-                card.classList.add('visible');
-                card.style.display = 'block';
-            } else {
-                card.classList.remove('visible');
-                card.style.display = 'none';
-            }
-        });
-
-        if (this.openSections.size > 0) {
-            this.helpContent.style.display = 'block';
-        }
-    }
-
-    syncHeightsAndPositions() {
-        const isStackedLayout = window.matchMedia('(max-width: 75em)').matches;
-
-        if (isStackedLayout) {
-            this.helpSectionCards.forEach(card => {
-                card.style.top = '';
-                card.style.height = '';
-            });
+        const card = this.getHelpCard(section);
+        if (!card) {
             return;
         }
 
-        const helpContentRect = this.helpContent.getBoundingClientRect();
-
-        // For each visible help card, align it with the corresponding form section
-        this.openSections.forEach(section => {
-            const helpCard = document.querySelector(`#help-${section}`);
-            const formSection = document.querySelector(`.form-section[data-section="${section}"]`);
-
-            if (helpCard && formSection) {
-                const formRect = formSection.getBoundingClientRect();
-                const top = formRect.top - helpContentRect.top;
-                const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-                helpCard.style.top = `${top / rootFontSize}em`;
-                helpCard.style.height = `${formRect.height / rootFontSize}em`;
-            }
-        });
+        card.hidden = false;
+        this.getSectionHelpBtn(section)?.setAttribute('aria-expanded', 'true');
     }
+
+    closeHelpSection(section) {
+        const card = this.getHelpCard(section);
+        if (!card) {
+            return;
+        }
+
+        card.hidden = true;
+        this.getSectionHelpBtn(section)?.setAttribute('aria-expanded', 'false');
+    }
+}
+
+function setDefaultDueDate() {
+    const faellig = document.getElementById('faellig');
+    if (!faellig || faellig.value) {
+        return;
+    }
+
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    faellig.value = `${yyyy}-${mm}-${dd}`;
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     new HelpSystem();
+    setDefaultDueDate();
 });

@@ -53,22 +53,39 @@
                 <!-- Section: Zahlungspartner -->
                 <section class="form-section" data-section="zahlungspartner">
                     <div class="section-header">
-                        <h2>Zahlungspartner</h2>
-                        <button class="section-help-btn" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner">
+                        <div class="section-title-group">
+                            <h2>Zahlungspartner</h2>
+                            <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Zahlungspartner" aria-expanded="false" aria-controls="microhelp-zahlungspartner">i</button>
+                        </div>
+                        <button class="section-help-btn" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" aria-expanded="false" aria-controls="help-zahlungspartner">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                <text x="10" y="14" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
+                                <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
+                                <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
                             </svg>
                         </button>
+                    </div>
+
+                    <div class="inline-help" id="microhelp-zahlungspartner" hidden>
+                        <p>Die Daten für den Zahlungspartner müssen vollständig ausgefüllt werden.</p>
+                        <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="typ">Typ</label>
-                            <select id="typ" class="form-select">
-                                <option>Natürliche Person</option>
-                                <option>Unternehmen</option>
-                            </select>
+                            <div class="input-with-help">
+                                <select id="typ" class="form-select">
+                                    <option>Natürliche Person</option>
+                                    <option>Unternehmen</option>
+                                </select>
+                                <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Typ" aria-expanded="false" aria-controls="microhelp-typ">i</button>
+                            </div>
+                            <div class="inline-help" id="microhelp-typ" hidden>
+                                <p>Eine natürliche Person ist beispielsweise die Lehrkraft oder die Schüler.</p>
+                                <p>Eine juristische Person ist eine Firma, die Schule.</p>
+                                <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="anrede">Anrede</label>
@@ -113,6 +130,13 @@
                     <div class="form-check checkbox-group">
                         <input type="checkbox" id="wohnsitz" class="form-check-input" checked>
                         <label for="wohnsitz" class="form-check-label">Wohnhaft in Deutschland</label>
+                        <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Wohnhaft in Deutschland" aria-expanded="false" aria-controls="microhelp-wohnsitz">i</button>
+                    </div>
+
+                    <div class="inline-help" id="microhelp-wohnsitz" hidden>
+                        <p>Die Auswahl "Wohnhaft in Deutschland" ist standardmäßig erfasst und bedeutet, dass die PLZ 5-stellig zu erfassen ist sowie eine IBAN mit 22 Stellen (2-stelliger Ländercode DE und 20 Ziffern).</p>
+                        <p>Diese Auswahl ist abzuwählen, wenn der Zahlungspartner keine Adresse in Deutschland angegeben hat. Ist diese Auswahl nicht angewählt, kann das entsprechende Land erfasst werden.</p>
+                        <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
                     </div>
 
                     <div class="form-group">
@@ -149,10 +173,12 @@
                             <label for="steuernr">Steuer-ID</label>
                             <div class="input-with-help">
                                 <input type="text" id="steuernr" class="form-control" placeholder="-------">
-                                <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuer-ID">i</button>
+                                <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuer-ID" aria-expanded="false" aria-controls="microhelp-steuernr">i</button>
                             </div>
-                            <div class="inline-help" style="display: none;">
-                                <p>11-stellige Steueridentifikations-nummer, nur Ziffern, ohne Leerzeichen, steht z.B. auf Ihrem Steuerbescheid oder einer Lohnabrechnung.</p>
+                            <div class="inline-help" id="microhelp-steuernr" hidden>
+                                <p>Die Steuer-ID (steuerliche Identifikationsnummer) ist eine bundeseinheitliche, persönliche und dauerhafte elfstellige Identifikationsnummer, die vom Bundesamt für Steuern vergeben wird.</p>
+                                <p>Diese Nummer finden Sie auf Ihrem Einkommensteuerbescheid und Ihrer Gehaltsabrechnung.</p>
+                                <p>Achtung: Es handelt sich hierbei nicht um die Steuernummer!</p>
                                 <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
                             </div>
                         </div>
@@ -161,94 +187,18 @@
                             <input type="date" id="geburtsdatum" class="form-control">
                         </div>
                     </div>
-                </section>
 
-                <!-- Section: Zahlungsdaten -->
-                <section class="form-section" data-section="zahlungsdaten">
-                    <div class="section-header">
-                        <h2>Zahlungsdaten</h2>
-                        <button class="section-help-btn" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                <text x="10" y="14" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="betrag">Auszahlungsbetrag</label>
-                            <input type="text" id="betrag" class="form-control" value="0,00 €">
-                        </div>
-                        <div class="form-group">
-                            <label for="faellig">Fällig am</label>
-                            <input type="text" id="faellig" class="form-control" value="25.03.2026">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="verwendung">Verwendungszweck</label>
-                        <input type="text" id="verwendung" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="vermerkt">Interner Vermerkt</label>
-                        <input type="text" id="vermerkt" class="form-control">
-                    </div>
-
-                    <hr class="section-divider">
-
-                    <div class="form-group">
-                        <label for="kommentar">Kommentar (optional)</label>
-                        <textarea id="kommentar" class="form-control large-textarea" rows="3"></textarea>
-                        <small class="char-counter">(1000 Zeichen)</small>
-                    </div>
-                </section>
-
-                <!-- Section: Anhänge -->
-                <section class="form-section" data-section="anhaenge">
-                    <div class="section-header">
-                        <h2>Anhänge</h2>
-                        <button class="section-help-btn" data-section="anhaenge" aria-label="Hilfe für Anhänge">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                <text x="10" y="14" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">i</text>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <p class="section-note">
-                        Hier können Sie die Rechnungsdokumente hochladen. Max. 10 Anhänge, max 2,8 MB pro Anhang, zulässige Dateiformate: PDF, JPG, PNG.
-                    </p>
-
-                    <div class="form-group">
-                        <label for="kommentar-anhang">Kommentar (optional)</label>
-                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3"></textarea>
-                        <small class="char-counter">(1000 Zeichen)</small>
-                    </div>
-
-                    <div class="button-group">
-                        <button class="btn btn-outline-secondary">Datei auswählen</button>
-                        <span class="drop-hint">oder hierher ziehen</span>
-                    </div>
-                </section>
-
-                <!-- Form Actions -->
-                <div class="form-actions">
-                    <button class="btn btn-primary">Richtigkeit der Daten bestätigen</button>
-                    <button class="btn btn-secondary">Abbrechen</button>
-                </div>
-            </main>
-
-            <!-- Help Sidebar -->
-            <aside class="help-sidebar hidden" id="help-sidebar">
-                <h2 class="help-sidebar-title">Hilfe für dieses Formular</h2>
-                <div class="help-content" id="help-content">
-                    <!-- Zahlungspartner Help -->
-                    <div class="help-section-card" id="help-zahlungspartner" data-section="zahlungspartner" style="display: none;">
+                    <!-- Bereichshilfe: Zahlungspartner -->
+                    <aside class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" hidden>
                         <div class="help-card-header">
                             <h4>Zahlungspartner</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">i</button>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
+                                    <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                                </svg>
+                            </button>
                         </div>
 
                         <div class="help-subsection">
@@ -272,13 +222,85 @@
                             <h5>Steuer-ID</h5>
                             <p>Die Steuer-Identifikationsnummer (Steuer-ID) ist eine persönliche 11-stellige Zahl, die ein Bundesfinanztamt für Steuern vergeben wird und die Person eindeutig identifiziert zur Steuerveranlagung und zum Steuerbescheid oder Lebenszeitarbeitskonten.</p>
                         </div>
+                    </aside>
+                </section>
+
+                <!-- Section: Zahlungsdaten -->
+                <section class="form-section" data-section="zahlungsdaten">
+                    <div class="section-header">
+                        <h2>Zahlungsdaten</h2>
+                        <button class="section-help-btn" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten" aria-expanded="false" aria-controls="help-zahlungsdaten">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
+                                <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                            </svg>
+                        </button>
                     </div>
 
-                    <!-- Zahlungsdaten Help -->
-                    <div class="help-section-card" id="help-zahlungsdaten" data-section="zahlungsdaten" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="betrag">Auszahlungsbetrag</label>
+                            <input type="text" id="betrag" class="form-control" value="0,00 €">
+                        </div>
+                        <div class="form-group">
+                            <label for="faellig">Fällig am</label>
+                            <div class="input-with-help">
+                                <input type="date" id="faellig" class="form-control">
+                                <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Fällig am" aria-expanded="false" aria-controls="microhelp-faellig">i</button>
+                            </div>
+                            <div class="inline-help" id="microhelp-faellig" hidden>
+                                <p>Hier ist die Fälligkeit/der Auszahlungszeitpunkt gemäß Rechnung/Zahlungsaufforderung zu erfassen. Dieses Datum muss in der Zukunft liegen.</p>
+                                <p>Die Fälligkeit darf nicht im nächsten Jahr oder mehr als 6 Monate in der Zukunft liegen.</p>
+                                <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungsdaten">Bereichshilfe</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="verwendung">Verwendungszweck</label>
+                        <div class="input-with-help">
+                            <input type="text" id="verwendung" class="form-control">
+                            <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Verwendungszweck" aria-expanded="false" aria-controls="microhelp-verwendung">i</button>
+                        </div>
+                        <div class="inline-help" id="microhelp-verwendung" hidden>
+                            <p>Bitte hier den Verwendungszweck gemäß der Rechnung eintragen, welcher auf der Ihnen vorliegenden Rechnung genannt ist, z.B. Rechnungsnummer, Buchungskennzeichen, Buchungsnummer, Belegnummer, Kundennummer, usw.</p>
+                            <p>Diese Daten erscheinen auf dem Kontoauszug Ihres Zahlungspartners.</p>
+                            <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungsdaten">Bereichshilfe</a>.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vermerkt">Interner Vermerk</label>
+                        <div class="input-with-help">
+                            <input type="text" id="vermerkt" class="form-control">
+                            <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Interner Vermerk" aria-expanded="false" aria-controls="microhelp-vermerkt">i</button>
+                        </div>
+                        <div class="inline-help" id="microhelp-vermerkt" hidden>
+                            <p>Hier haben Sie die Möglichkeit, Informationen/Vermerke für Ihren internen Gebrauch zu erfassen (z.B. Informationen zur Mobilität, Informationen über Versicherungen, usw.). Diese Eingaben werden nicht in der Buchung erfasst, sondern sind nur von Ihnen einsehbar.</p>
+                            <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungsdaten">Bereichshilfe</a>.</p>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <div class="form-group">
+                        <label for="kommentar">Kommentar (optional)</label>
+                        <textarea id="kommentar" class="form-control large-textarea" rows="3"></textarea>
+                        <small class="char-counter">(1000 Zeichen)</small>
+                    </div>
+
+                    <!-- Bereichshilfe: Zahlungsdaten -->
+                    <aside class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten" hidden>
                         <div class="help-card-header">
                             <h4>Zahlungsdaten</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">i</button>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
+                                    <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                                </svg>
+                            </button>
                         </div>
 
                         <div class="help-subsection">
@@ -300,13 +322,56 @@
                             <h5>Kommentar</h5>
                             <p>Geben Sie hier noch einen optionalen Kommentar ein, um Ihren Vorgang noch besser zu schildern oder vorab Probleme mitzuteilen. Dies kann unter Umständen die Bearbeitung beschleunigen und Rückfragen unsererseits reduzieren.</p>
                         </div>
+                    </aside>
+                </section>
+
+                <!-- Section: Anhänge -->
+                <section class="form-section" data-section="anhaenge">
+                    <div class="section-header">
+                        <div class="section-title-group">
+                            <h2>Anhänge</h2>
+                            <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Anhänge" aria-expanded="false" aria-controls="microhelp-anhaenge">i</button>
+                        </div>
+                        <button class="section-help-btn" data-section="anhaenge" aria-label="Hilfe für Anhänge" aria-expanded="false" aria-controls="help-anhaenge">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
+                                <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                            </svg>
+                        </button>
                     </div>
 
-                    <!-- Anhänge Help -->
-                    <div class="help-section-card" id="help-anhaenge" data-section="anhaenge" style="display: none;">
+                    <div class="inline-help" id="microhelp-anhaenge" hidden>
+                        <p>Evtl. über die Speicherung und die dauerhafte mögliche Einsicht?</p>
+                        <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="anhaenge">Bereichshilfe</a>.</p>
+                    </div>
+
+                    <p class="section-note">
+                        Hier können Sie die Rechnungsdokumente hochladen. Max. 10 Anhänge, max 2,8 MB pro Anhang, zulässige Dateiformate: PDF, JPG, PNG.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="kommentar-anhang">Kommentar (optional)</label>
+                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3"></textarea>
+                        <small class="char-counter">(1000 Zeichen)</small>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-outline-secondary">Datei auswählen</button>
+                        <span class="drop-hint">oder hierher ziehen</span>
+                    </div>
+
+                    <!-- Bereichshilfe: Anhänge -->
+                    <aside class="help-card" id="help-anhaenge" data-section="anhaenge" aria-label="Hilfe für Anhänge" hidden>
                         <div class="help-card-header">
                             <h4>Anhänge</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">i</button>
+                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                                    <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
+                                    <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                                </svg>
+                            </button>
                         </div>
 
                         <div class="help-subsection">
@@ -322,9 +387,15 @@
                         <div class="help-subsection">
                             <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
-                    </div>
+                    </aside>
+                </section>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button class="btn btn-primary">Richtigkeit der Daten bestätigen</button>
+                    <button class="btn btn-secondary">Abbrechen</button>
                 </div>
-            </aside>
+            </main>
         </div>
 
         <!-- Footer -->

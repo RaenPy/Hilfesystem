@@ -71,31 +71,17 @@ body {
 }
 
 .main-wrapper {
-    width: min(100%, 89.5em);
+    width: min(100%, 58.75em);
     margin: 0 auto;
     padding: 1.375em 1.5em 4.625em;
-    display: grid;
-    grid-template-columns: minmax(0, 55.75em);
-    gap: 0.625em;
-    justify-content: center;
-    align-items: start;
     flex: 1;
-}
-
-.main-wrapper:has(.help-sidebar:not(.hidden)) {
-    grid-template-columns: minmax(0, 55.75em) minmax(22em, 26.25em);
-    justify-content: start;
-}
-
-.main-content {
-    min-width: 0;
 }
 
 .app-breadcrumb {
     margin: 0 0 1.375em;
     color: #666666;
     font-size: 0.8125em;
-    font-weight: 400;
+    font-weight: 100;
 }
 
 .app-breadcrumb a {
@@ -143,6 +129,12 @@ p {
     line-height: 1.2;
 }
 
+.section-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
 .section-help-btn,
 .help-card-close-btn,
 .micro-help-btn {
@@ -161,7 +153,8 @@ p {
     line-height: 1;
 }
 
-.section-help-btn svg {
+.section-help-btn svg,
+.help-card-close-btn svg {
     width: 1em;
     height: 1em;
 }
@@ -269,17 +262,44 @@ label {
     padding-right: 2.625em;
 }
 
+/* form-select und input[type=date] haben schon ein natives Icon rechts
+   (Pfeil bzw. Kalender) – zusätzlicher Platz fürs Mikrohilfe-Icon links
+   davon, statt es zu überlagern. Gleicher Abstand für beide Feldtypen. */
+.input-with-help .form-select,
+.input-with-help input[type="date"] {
+    padding-right: 4.25em;
+}
+
+/* Normiert die Innenabstände des nativen Kalender-Icons (Chrome/Safari),
+   damit seine Position vorhersehbar bleibt statt browserabhängig zu
+   schwanken. */
+.input-with-help input[type="date"]::-webkit-calendar-picker-indicator {
+    margin-right: 0;
+}
+
 .micro-help-btn {
-    position: absolute;
-    right: 0.625em;
-    top: 50%;
+    flex: 0 0 auto;
     width: 1.25em;
     height: 1.25em;
-    transform: translateY(-50%);
     border-color: #4d9bea;
     background: #ffffff;
     color: #2d8cff;
     font-size: 0.75em;
+}
+
+/* Innerhalb eines Feldes schwebt der Button rechts im Feld (wie bei der
+   Steuer-ID); außerhalb (z.B. neben einer Überschrift oder einem
+   Checkbox-Label) bleibt er ein normales Inline-Element im Textfluss. */
+.input-with-help .micro-help-btn {
+    position: absolute;
+    right: 0.625em;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.input-with-help .form-select + .micro-help-btn,
+.input-with-help input[type="date"] + .micro-help-btn {
+    right: 2.75em;
 }
 
 .inline-help {
@@ -378,46 +398,48 @@ label {
     margin-top: 2.5em;
 }
 
-.help-sidebar {
-    min-width: 0;
-    padding-top: 4.8125em;
-}
-
-.help-sidebar.hidden {
-    display: none;
-}
-
-.help-sidebar-title {
-    margin: 0 0 1.125em;
-    color: #000000;
-    font-size: 1.25em;
-    font-weight: 700;
-}
-
-.help-content {
-    position: relative;
-    width: 100%;
-}
-
-.help-section-card {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    display: none;
-    overflow: auto;
-    background: #ffffff;
-    border-radius: var(--atlas-radius);
+/* Bereichshilfe: standardmäßig ein normaler Block direkt unter dem
+   Sektionsinhalt (funktioniert ohne JS/CSS-Unterstützung und auf
+   schmalen Bildschirmen, wo neben der Sektion kein Platz ist). */
+.help-card {
+    margin: 1.5em 0 0;
     padding: 1.125em 1.375em;
+    background: var(--atlas-bg);
+    border-radius: var(--atlas-radius);
 }
 
-.help-section-card.visible {
-    display: block;
+.help-card[hidden] {
+    display: none;
+}
+
+/* Ab hier passt die Formularspalte (55.75em) plus Lücke (0.5em) plus
+   Hilfe-Karte (26.25em) auf beiden Seiten der Sektion nebeneinander,
+   ohne dass irgendetwas überlappt (55.75 + 0.5 + 26.25, verdoppelt).
+   Die Formularspalte selbst bewegt sich dadurch nie – die Karte klinkt
+   sich lediglich neben ihre Sektion ein. */
+@media (min-width: 96em) {
+    .help-card {
+        position: absolute;
+        /* top + bottom (statt nur top) strecken die Karte automatisch auf
+           die volle Höhe der Sektion – reagiert live auf Höhenänderungen
+           der Sektion (z.B. aufklappende Mikrohilfe), ganz ohne JS. */
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        width: 26.25em;
+        margin: 0 0 0 0.5em;
+        padding: 1.125em 1.375em;
+        overflow-y: auto;
+        background: #ffffff;
+        border-radius: var(--atlas-radius);
+        box-shadow: 0 0.25em 1em rgba(0, 0, 0, 0.12);
+    }
 }
 
 .help-card-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 1em;
 }
 
@@ -426,13 +448,6 @@ label {
     color: #000000;
     font-size: 0.875em;
     font-weight: 700;
-}
-
-.help-card-close-btn {
-    flex: 0 0 auto;
-    width: 1.875em;
-    height: 1.875em;
-    margin-top: -0.375em;
 }
 
 .help-subsection {
@@ -476,24 +491,6 @@ label {
 
 .footer a:hover {
     text-decoration: underline;
-}
-
-@media (max-width: 75em) {
-    .main-wrapper,
-    .main-wrapper:has(.help-sidebar:not(.hidden)) {
-        grid-template-columns: minmax(0, 1fr);
-        width: min(100%, 58.75em);
-    }
-
-    .help-sidebar {
-        padding-top: 0;
-    }
-
-    .help-section-card {
-        position: static;
-        height: auto !important;
-        margin-bottom: 0.5em;
-    }
 }
 
 @media (max-width: 48em) {
