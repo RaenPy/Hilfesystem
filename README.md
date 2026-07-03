@@ -11,7 +11,7 @@ Jeder Formularabschnitt (*Zahlungspartner*, *Zahlungsdaten*, *Anhänge*) hat ein
 
 ![Bereichshilfe und Mikrohilfe](FormularSeiteBereichshilfeMikrohilfe.png)
 
-### 2. Mikrohilfe (Inline Help / Tooltip)
+### 2. Mikrohilfe (Inline Help)
 Einzelne Felder (z. B. *Typ*, *Steuer-ID*, *Fällig am*, *Verwendungszweck*) haben einen kleinen `i`-Button. Er öffnet ein kompaktes Inline-Panel direkt unter dem Feld mit einer kurzen, feldspezifischen Erklärung.
 
 ![Mikrohilfe / Tooltip](FormularSeiteToolTip.png)
@@ -22,7 +22,6 @@ Jede Mikrohilfe enthält einen Link *"Weitere Informationen und Hilfen finden Si
 ## Weitere Funktionen
 
 - **Barrierefreiheit**: `aria-expanded`, `aria-controls` und `aria-label` an allen Hilfe-Buttons; Klick außerhalb eines offenen Panels schließt es; die Escape-Taste schließt das fokussierte Hilfe-Panel bzw. die offene Bereichshilfe und setzt den Fokus zurück auf den auslösenden Button.
-- **Datumsfelder**: Ein sichtbares Textfeld im Format `TT.MM.JJJJ` ist mit einem unsichtbaren nativen `type="date"`-Feld gekoppelt. Der Kalender-Button öffnet den nativen Datepicker (`showPicker()`), ein Clear-Button leert das Feld. Manuelle Eingaben werden beim Verlassen des Felds geparst und auf Gültigkeit geprüft (z. B. wird `31.02.2026` abgelehnt). Das Feld *"Fällig am"* wird beim Laden automatisch mit dem heutigen Datum vorbelegt.
 
 ## Projektstruktur
 
@@ -30,10 +29,9 @@ Jede Mikrohilfe enthält einen Link *"Weitere Informationen und Hilfen finden Si
 |---|---|
 | `index.html` | Formular-Markup mit den drei Abschnitten Zahlungspartner, Zahlungsdaten, Anhänge inkl. eingebetteter Hilfe-Elemente |
 | `style.css` | Styling im at:las-Look (Farben, Header, Formular, Hilfekarten, Responsive-Verhalten) |
-| `script.js` | `HelpSystem`-Klasse (Steuerung von Bereichs-/Mikrohilfe) sowie die Datumsfeld-Logik |
+| `script.js` | `HelpSystem`-Klasse (Steuerung von Bereichs-/Mikrohilfe)|
 | `FormularSeiteBereichshilfeMikrohilfe.png`, `FormularSeiteToolTip.png` | Screenshots der beiden Hilfe-Ebenen |
-| `manifest.json`, `browserconfig.xml`, `favicon*.png`, `apple-icon-*.png`, `android-icon-*.png`, `ms-icon-*.png` | PWA-/Favicon-Assets |
-| `anleitung.txt` | Anleitung eines Favicon-Generators zum Einbinden der generierten Icon-Dateien |
+
 
 ## Verwendung
 
