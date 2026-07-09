@@ -52,7 +52,9 @@ class HelpSystem {
                 const section = e.currentTarget.getAttribute('data-section');
                 this.openHelpSection(section);
                 const help = e.currentTarget.closest('.inline-help');
-                this.scrollHelpCardToTopic(section, this.getTopicFromHelp(help));
+                const topic = this.getTopicFromHelp(help);
+                this.scrollHelpCardToTopic(section, topic);
+                this.focusHelpCardTopic(section, topic);
             });
         });
 
@@ -99,9 +101,7 @@ class HelpSystem {
 
             const openCard = document.activeElement?.closest('.help-card');
             if (openCard) {
-                const section = openCard.getAttribute('data-section');
-                this.closeHelpSection(section);
-                this.getSectionHelpBtn(section)?.focus();
+                this.closeHelpSection(openCard.getAttribute('data-section'));
             }
         });
     }
@@ -116,13 +116,24 @@ class HelpSystem {
     }
 
     getAssociatedControl(btn) {
-        const wrapper = btn.closest('.input-with-help');
+        const wrapper = btn.closest('.input-with-help, .form-check.checkbox-group');
         return wrapper?.querySelector('.form-control, .form-select, .form-check-input') ?? null;
     }
 
     showInlineHelp(help, btn) {
         help.hidden = false;
         btn?.setAttribute('aria-expanded', 'true');
+
+        // Verknüpft das zum Button gehörende Feld per aria-describedby mit
+        // der Mikrohilfe, solange sie sichtbar ist: Screenreader lesen den
+        // Hilfetext dann als Beschreibung des Felds vor (z.B. beim erneuten
+        // Fokussieren nach dem Öffnen per i-icon).
+        const control = this.getAssociatedControl(btn);
+        if (control) {
+            const describedBy = new Set((control.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean));
+            describedBy.add(help.id);
+            control.setAttribute('aria-describedby', [...describedBy].join(' '));
+        }
 
         // Falls die Bereichshilfe der Sektion bereits offen ist, direkt zum
         // passenden Abschnitt scrollen (no-op, falls noch keiner hinterlegt
@@ -136,6 +147,16 @@ class HelpSystem {
     hideInlineHelp(help, btn) {
         help.hidden = true;
         btn?.setAttribute('aria-expanded', 'false');
+
+        const control = this.getAssociatedControl(btn);
+        if (control) {
+            const describedBy = (control.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(id => id && id !== help.id);
+            if (describedBy.length) {
+                control.setAttribute('aria-describedby', describedBy.join(' '));
+            } else {
+                control.removeAttribute('aria-describedby');
+            }
+        }
     }
 
     toggleInlineHelp(help, btn) {
@@ -170,6 +191,20 @@ class HelpSystem {
 
         const target = card.querySelector(`[data-topic="${topic}"]`);
         target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Setzt beim Öffnen der Bereichshilfe aus einer Mikrohilfe heraus den
+    // Fokus in die Bereichshilfe hinein (auf den passenden Abschnitt, sonst
+    // auf den Schließen-Button), statt ihn auf dem jetzt versteckten
+    // Mikrohilfe-Link zu belassen.
+    focusHelpCardTopic(section, topic) {
+        const card = this.getHelpCard(section);
+        if (!card || card.hidden) {
+            return;
+        }
+
+        const target = topic ? card.querySelector(`[data-topic="${topic}"]`) : null;
+        (target ?? card.querySelector('.help-card-close-btn'))?.focus({ preventScroll: true });
     }
 
     getHelpCard(section) {
@@ -210,7 +245,12 @@ class HelpSystem {
         }
 
         card.hidden = true;
-        this.getSectionHelpBtn(section)?.setAttribute('aria-expanded', 'false');
+        const btn = this.getSectionHelpBtn(section);
+        btn?.setAttribute('aria-expanded', 'false');
+        // Fokus zurück auf das i-icon, egal wie geschlossen wurde (X-Button,
+        // erneuter Klick aufs Icon oder Escape), damit Tastatur-Nutzer nicht
+        // im Nichts landen.
+        btn?.focus();
     }
 }
 
@@ -296,6 +336,47 @@ function setupDateFieldControls() {
     });
 }
 
+// Koppelt Checkbox und abhängiges Feld: "Land" ist nur relevant, wenn der
+// Zahlungspartner NICHT in Deutschland wohnt; "Steuer-ID" ist nur bei einer
+// Honorarzahlung nötig. Das abhängige Feld wird entsprechend deaktiviert
+// (und damit auch aus der Tab-Reihenfolge genommen), nicht nur ausgegraut.
+// Hat das Feld eine eigene Mikrohilfe (z.B. Steuer-ID), wird deren Button
+// im selben Zug deaktiviert und ein bereits geöffnetes Panel geschlossen –
+// ein deaktiviertes Feld soll keine aktivierbare Mikrohilfe mehr haben.
+function setupConditionalFields(helpSystem) {
+    const syncDisabled = (checkboxId, fieldId, disableWhenChecked) => {
+        const checkbox = document.getElementById(checkboxId);
+        const field = document.getElementById(fieldId);
+        if (!checkbox || !field) {
+            return;
+        }
+
+        const microHelpBtn = field.closest('.input-with-help')?.querySelector('.micro-help-btn');
+
+        const sync = () => {
+            const disabled = disableWhenChecked ? checkbox.checked : !checkbox.checked;
+            field.disabled = disabled;
+
+            if (!microHelpBtn) {
+                return;
+            }
+
+            microHelpBtn.disabled = disabled;
+
+            const help = helpSystem.getInlineHelp(microHelpBtn);
+            if (disabled && help && !help.hidden) {
+                helpSystem.hideInlineHelp(help, microHelpBtn);
+            }
+        };
+
+        checkbox.addEventListener('change', sync);
+        sync();
+    };
+
+    syncDisabled('wohnsitz', 'land', true);
+    syncDisabled('honorar', 'steuernr', false);
+}
+
 function setDefaultDueDate() {
     const nativeInput = document.getElementById('faellig-value');
     if (!nativeInput || nativeInput.value) {
@@ -311,7 +392,8 @@ function setDefaultDueDate() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    new HelpSystem();
+    const helpSystem = new HelpSystem();
     setDefaultDueDate();
     setupDateFieldControls();
+    setupConditionalFields(helpSystem);
 });

@@ -4,38 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hilfesystem - Zahlung verausgaben</title>
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Zum Hauptinhalt springen</a>
     <div class="app-container">
         <!-- Header -->
         <header class="header navbar">
-            <div class="logo">at:las</div>
+            <a href="#" class="logo" aria-label="at:las – zur Startseite">at:las</a>
             <div class="header-icons">
                 <button class="icon-button" aria-label="Darstellung umschalten">◐</button>
                 <button class="icon-button" aria-label="Hilfe">?</button>
                 <button class="icon-button" aria-label="Benutzerkonto">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="7.5" r="3.25" stroke="currentColor" stroke-width="1.4"/>
-                        <path d="M4 17c0-4.5 2.9-6.7 6-6.7s6 2.2 6 6.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                     </svg>
                 </button>
             </div>
@@ -43,78 +27,80 @@
 
         <div class="main-wrapper">
             <!-- Main Content -->
-            <main class="main-content">
+            <main class="main-content" id="main-content" tabindex="-1">
                 <!-- Breadcrumb -->
-                <nav class="breadcrumb app-breadcrumb">
-                    <a href="#">Startseite</a> /
-                    <a href="#">Erasmus</a> /
-                    <a href="#">Projektübersicht</a> /
-                    <a href="#">Kontoverwaltung</a> /
-                    <span>Zahlung verausgaben</span>
+                <nav class="breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+                    <ol>
+                        <li><a href="#">Startseite</a></li>
+                        <li><a href="#">Erasmus</a></li>
+                        <li><a href="#">Projektübersicht</a></li>
+                        <li><a href="#">Kontoverwaltung</a></li>
+                        <li aria-current="page">Zahlung verausgaben</li>
+                    </ol>
                 </nav>
 
                 <h1>Zahlung verausgaben</h1>
 
                 <!-- Section: Zahlungspartner -->
-                <section class="form-section" data-section="zahlungspartner">
+                <section class="form-section" data-section="zahlungspartner" aria-labelledby="zahlungspartner-heading">
                     <div class="section-header">
-                        <h2>Zahlungspartner</h2>
+                        <h2 id="zahlungspartner-heading">Zahlungspartner</h2>
                         <button class="section-help-btn" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" aria-expanded="false" aria-controls="help-zahlungspartner">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
-                                <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
                             </svg>
                         </button>
                     </div>
 
                     <!-- Bereichshilfe: Zahlungspartner -->
-                    <aside class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" aria-label="Hilfe für Zahlungspartner" hidden>
+                    <div class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" role="region" aria-labelledby="help-zahlungspartner-title" hidden>
                         <div class="help-card-header">
-                            <h4>Zahlungspartner</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <h3 id="help-zahlungspartner-title">Zahlungspartner</h3>
                         </div>
 
                         <div class="help-subsection">
                             <p>Die Daten für den Zahlungspartner müssen vollständig ausgefüllt werden.</p>
                         </div>
 
-                        <div class="help-subsection" data-topic="typ">
-                            <h5>Typ</h5>
+                        <div class="help-subsection" data-topic="typ" tabindex="-1">
+                            <h4>Typ</h4>
                             <p>Eine natürliche Person ist ein Mensch. Ein Mensch kann Rechte und Pflichten haben, ist Träger von Rechten und Pflichten. Sein Vermögen wird für die Verbindlichkeiten der Person haftbar, beispielsweise einer Mutter, ein Schüler und ein Nachbar.</p>
                             <p>Eine juristische Person ist eine Organisation oder Firma, an rechtlich wie die Person behandelt wird. Sie kann Verträge abschließen, Eigentum besitzt und Steuern zahlen.</p>
                         </div>
 
                         <div class="help-subsection">
-                            <h5>Persönliche Angaben</h5>
+                            <h4>Persönliche Angaben</h4>
                             <p>Schreiben Sie die Angaben so, wie sie in offiziellen Dokumenten stehen.</p>
                         </div>
 
-                        <div class="help-subsection" data-topic="wohnsitz">
-                            <h5>Wohnhaft in Deutschland</h5>
+                        <div class="help-subsection" data-topic="wohnsitz" tabindex="-1">
+                            <h4>Wohnhaft in Deutschland</h4>
                             <p>Die Auswahl "Wohnhaft in Deutschland" ist standardmäßig erfasst und bedeutet, dass die PLZ 5-stellig zu erfassen ist sowie eine IBAN mit 22 Stellen (2-stelliger Ländercode DE und 20 Ziffern).</p>
                             <p>Diese Auswahl ist abzuwählen, wenn der Zahlungspartner keine Adresse in Deutschland angegeben hat. Ist diese Auswahl nicht angewählt, kann das entsprechende Land erfasst werden.</p>
                         </div>
 
                         <div class="help-subsection">
-                            <h5>IBAN</h5>
+                            <h4>IBAN</h4>
                             <p>22-stellige Nummer, bestehend aus Ländercode, Prüfziffer, Bankleitzahl, Kontonummer (bis zu 10 Stellen, ggf. Nutzerdaten werden mit Nullen aufgefüllt).</p>
                             <p>Beide der Kontoinhaber vom Auftraggeber abweichen, müssen wir wissen woher die Anweisung unter Umstanden in Ihrer Beiträge zu erfragen.</p>
                         </div>
 
-                        <div class="help-subsection" data-topic="steuernr">
-                            <h5>Steuer-ID</h5>
+                        <div class="help-subsection" data-topic="steuernr" tabindex="-1">
+                            <h4>Steuer-ID</h4>
                             <p>Die Steuer-Identifikationsnummer (Steuer-ID) ist eine persönliche 11-stellige Zahl, die ein Bundesfinanztamt für Steuern vergeben wird und die Person eindeutig identifiziert zur Steuerveranlagung und zum Steuerbescheid oder Lebenszeitarbeitskonten.</p>
                         </div>
 
                         <div class="help-subsection">
                             <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
-                    </aside>
+
+                        <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        </button>
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -234,15 +220,14 @@
                                 <input type="date" id="geburtsdatum-value" class="native-date-input" tabindex="-1" aria-hidden="true">
                                 <div class="field-icon-group">
                                     <button class="field-icon-btn field-clear-btn" type="button" data-clear-target="geburtsdatum-value" aria-label="Datum löschen">
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                                         </svg>
                                     </button>
                                     <button class="field-icon-btn field-calendar-btn" type="button" data-picker-target="geburtsdatum-value" aria-label="Kalender öffnen">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <rect x="1.5" y="2.5" width="13" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                                            <path d="M1.5 6H14.5" stroke="currentColor" stroke-width="1.3"/>
-                                            <path d="M4.5 1V3.5M11.5 1V3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+                                            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -253,59 +238,59 @@
                 </section>
 
                 <!-- Section: Zahlungsdaten -->
-                <section class="form-section" data-section="zahlungsdaten">
+                <section class="form-section" data-section="zahlungsdaten" aria-labelledby="zahlungsdaten-heading">
                     <div class="section-header">
-                        <h2>Zahlungsdaten</h2>
+                        <h2 id="zahlungsdaten-heading">Zahlungsdaten</h2>
                         <button class="section-help-btn" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten" aria-expanded="false" aria-controls="help-zahlungsdaten">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
-                                <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
                             </svg>
                         </button>
                     </div>
 
                     <!-- Bereichshilfe: Zahlungsdaten -->
-                    <aside class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" aria-label="Hilfe für Zahlungsdaten" hidden>
+                    <div class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" role="region" aria-labelledby="help-zahlungsdaten-title" hidden>
                         <div class="help-card-header">
-                            <h4>Zahlungsdaten</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <h3 id="help-zahlungsdaten-title">Zahlungsdaten</h3>
                         </div>
 
                         <div class="help-subsection">
-                            <h5>Auszahlungsdaten</h5>
+                            <h4>Auszahlungsdaten</h4>
                             <p>Hier geben Sie Ihren individuellen Auszahlungsbetrag für Ihr Projekt ein, sowie ein Fälligkeitsdatum an dem der Betrag ausgezahlt werden soll.</p>
                         </div>
 
-                        <div class="help-subsection" data-topic="faellig">
-                            <h5>Fällig am</h5>
+                        <div class="help-subsection" data-topic="faellig" tabindex="-1">
+                            <h4>Fällig am</h4>
                             <p>Hier ist die Fälligkeit/der Auszahlungszeitpunkt gemäß Rechnung/Zahlungsaufforderung zu erfassen. Dieses Datum muss in der Zukunft liegen.</p>
                             <p>Die Fälligkeit darf nicht im nächsten Jahr oder mehr als 6 Monate in der Zukunft liegen.</p>
                         </div>
 
-                        <div class="help-subsection" data-topic="verwendung">
-                            <h5>Verwendungszweck</h5>
+                        <div class="help-subsection" data-topic="verwendung" tabindex="-1">
+                            <h4>Verwendungszweck</h4>
                             <p>Bitte geben Sie außerdem einen möglichst genauen Verwendungszweck für die Auszahlung an, sowie Sie ihn in der Antragsstellung auch angeben haben.</p>
                         </div>
 
-                        <div class="help-subsection" data-topic="vermerkt">
-                            <h5>Interner Vermerk</h5>
+                        <div class="help-subsection" data-topic="vermerkt" tabindex="-1">
+                            <h4>Interner Vermerk</h4>
                             <p>Die Angabe eines internen Vermerks kann spätere Rückfragen und Eingrenzungen eines Problemfalls deutlich erleichtern.</p>
                         </div>
 
                         <div class="help-subsection">
-                            <h5>Kommentar</h5>
+                            <h4>Kommentar</h4>
                             <p>Geben Sie hier noch einen optionalen Kommentar ein, um Ihren Vorgang noch besser zu schildern oder vorab Probleme mitzuteilen. Dies kann unter Umständen die Bearbeitung beschleunigen und Rückfragen unsererseits reduzieren.</p>
                         </div>
 
                         <div class="help-subsection">
                             <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
-                    </aside>
+
+                        <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        </button>
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -319,16 +304,15 @@
                                 <input type="date" id="faellig-value" class="native-date-input" tabindex="-1" aria-hidden="true">
                                 <div class="field-icon-group">
                                     <button class="field-icon-btn field-clear-btn" type="button" data-clear-target="faellig-value" aria-label="Datum löschen">
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                            <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                                         </svg>
                                     </button>
                                     <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Fällig am" aria-expanded="false" aria-controls="microhelp-faellig">i</button>
                                     <button class="field-icon-btn field-calendar-btn" type="button" data-picker-target="faellig-value" aria-label="Kalender öffnen">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <rect x="1.5" y="2.5" width="13" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
-                                            <path d="M1.5 6H14.5" stroke="currentColor" stroke-width="1.3"/>
-                                            <path d="M4.5 1V3.5M11.5 1V3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+                                            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -377,27 +361,21 @@
                 </section>
 
                 <!-- Section: Anhänge -->
-                <section class="form-section" data-section="anhaenge">
+                <section class="form-section" data-section="anhaenge" aria-labelledby="anhaenge-heading">
                     <div class="section-header">
-                        <h2>Anhänge</h2>
+                        <h2 id="anhaenge-heading">Anhänge</h2>
                         <button class="section-help-btn" data-section="anhaenge" aria-label="Hilfe für Anhänge" aria-expanded="false" aria-controls="help-anhaenge">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
-                                <circle cx="10" cy="6.7" r="1.1" fill="currentColor"/>
-                                <rect x="9.15" y="9.2" width="1.7" height="5.2" rx="0.85" fill="currentColor"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
                             </svg>
                         </button>
                     </div>
 
                     <!-- Bereichshilfe: Anhänge -->
-                    <aside class="help-card" id="help-anhaenge" data-section="anhaenge" aria-label="Hilfe für Anhänge" hidden>
+                    <div class="help-card" id="help-anhaenge" data-section="anhaenge" role="region" aria-labelledby="help-anhaenge-title" hidden>
                         <div class="help-card-header">
-                            <h4>Anhänge</h4>
-                            <button class="help-card-close-btn" aria-label="Hilfe schließen">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <h3 id="help-anhaenge-title">Anhänge</h3>
                         </div>
 
                         <div class="help-subsection">
@@ -405,19 +383,25 @@
                         </div>
 
                         <div class="help-subsection">
-                            <h5>Dateianhänge</h5>
+                            <h4>Dateianhänge</h4>
                             <p>Anhänge in Form von Text- und Bilddokumenten ermöglichen eine genauere Zuordnung und ein besseres Verständnis Ihres individuellen Sachverhalts.</p>
                         </div>
 
                         <div class="help-subsection">
-                            <h5>Dateiformat</h5>
+                            <h4>Dateiformat</h4>
                             <p>Sollten Sie Probleme haben, Ihre Dateien ins richtige Format zu bringen, schauen Sie gerne <a href="#">hier</a>. Dort können Sie ohne großen Aufwand konvertieren und komprimieren.</p>
                         </div>
 
                         <div class="help-subsection">
                             <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
-                    </aside>
+
+                        <button class="help-card-close-btn" aria-label="Hilfe schließen">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                            </svg>
+                        </button>
+                    </div>
 
                     <p class="section-note">
                         Hier können Sie die Rechnungsdokumente hochladen. Max. 10 Anhänge, max 2,8 MB pro Anhang, zulässige Dateiformate: PDF, JPG, PNG.
@@ -446,11 +430,13 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <a href="#">Support</a>
-            <a href="#">Impressum</a>
-            <a href="#">Datenschutz</a>
-            <a href="#">Barrierefreiheit</a>
-            <a href="#">FAQ</a>
+            <ul>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Impressum</a></li>
+                <li><a href="#">Datenschutz</a></li>
+                <li><a href="#">Barrierefreiheit</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
         </footer>
     </div>
 

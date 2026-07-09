@@ -4,7 +4,9 @@
 
 :root {
     --atlas-blue: #2f92d0;
-    --atlas-link: #008bd2;
+    /* #008bd2 lag mit 3.73:1 unter dem WCAG-AA-Mindestkontrast (4.5:1) für
+       Text auf Weiß – auf 4.56:1 abgedunkelt, gleicher Blauton. */
+    --atlas-link: #007cbb;
     --atlas-text: #333333;
     --atlas-muted: #5f6368;
     --atlas-border: #dfe3e7;
@@ -48,6 +50,31 @@ body {
     font-weight: 700;
     letter-spacing: 0;
     line-height: 1;
+    text-decoration: none;
+}
+
+/* Sichtbar erst bei Tastaturfokus (nicht display:none/visibility:hidden,
+   sonst wäre der Link für Tastatur-Nutzer:innen unerreichbar) – erster
+   Tab-Stopp der Seite, springt vorbei an Header/Breadcrumb direkt zum
+   Hauptinhalt (<main id="main-content">). */
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    transform: translateY(-100%);
+    background: #ffffff;
+    color: var(--atlas-link);
+    font-weight: 700;
+    font-size: 0.875em;
+    padding: 0.75em 1.25em;
+    border-radius: 0 0 0.375em 0;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
 }
 
 .header-icons {
@@ -87,6 +114,32 @@ body {
     color: #666666;
     font-size: 0.8125em;
     font-weight: 100;
+}
+
+.app-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.app-breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+}
+
+/* Trennzeichen rein dekorativ per CSS statt als literaler "/"-Textknoten.
+   Die "/ ''" Schreibweise (CSS Alt-Text) setzt den Accessibility-Namen des
+   generierten Inhalts explizit auf leer – reines content:"/" würde sonst
+   trotzdem als "Schrägstrich" im Accessibility-Tree landen und von
+   Screenreadern vorgelesen werden. */
+.app-breadcrumb li + li::before {
+    content: "/" / "";
+    color: #666666;
 }
 
 .app-breadcrumb a {
@@ -162,9 +215,26 @@ p {
     color: var(--atlas-link);
 }
 
+/* Klassischer Disabled-Look wie bei den Formularfeldern: nur abgeblendet,
+   kein Hover-Effekt (auch nicht, wenn die Maus zufällig darüber steht). */
+.micro-help-btn:disabled,
+.micro-help-btn:disabled:hover {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #4d9bea;
+    color: #006ff6;
+}
+
 /* Schlichter X-Button ohne Kreis/Rahmen – eindeutig als "Schließen" statt
-   als Toggle-Icon erkennbar, im Gegensatz zum section-help-btn. */
+   als Toggle-Icon erkennbar, im Gegensatz zum section-help-btn. Steht im
+   Markup bewusst als letztes Element der Bereichshilfe (nach allen
+   help-subsection-Inhalten), damit er in Tab-/Screenreader-Reihenfolge
+   zuletzt kommt – optisch aber weiterhin oben rechts über der Karte via
+   position:absolute (Bezugsrahmen: .help-card, siehe dort). */
 .help-card-close-btn {
+    position: absolute;
+    top: 1.125em;
+    right: 1.375em;
     width: 1.5em;
     height: 1.5em;
     padding: 0;
@@ -174,6 +244,7 @@ p {
     align-items: center;
     justify-content: center;
     color: #6c757d;
+    z-index: 1;
 }
 
 .help-card-close-btn svg {
@@ -247,8 +318,21 @@ label {
     box-shadow: 0 0 0 0.1875em rgba(13, 110, 253, 0.16);
 }
 
+/* Bootstrap füllt deaktivierte Felder standardmäßig grau statt sie nur
+   abzublenden – hier stattdessen der klassische Look: Feld bleibt optisch
+   exakt gleich (weißer Hintergrund, gleicher Rahmen), nur insgesamt
+   abgeblendet. */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: #ffffff;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .form-control::placeholder {
-    color: #7d8790;
+    /* #7d8790 lag mit 3.66:1 unter dem WCAG-AA-Mindestkontrast (4.5:1) –
+       auf 4.62:1 abgedunkelt. */
+    color: #6d767f;
     opacity: 1;
 }
 
@@ -293,7 +377,9 @@ label {
     height: 1.25em;
     border-color: #4d9bea;
     background: #ffffff;
-    color: #2d8cff;
+    /* #2d8cff lag mit 3.33:1 unter dem WCAG-AA-Mindestkontrast (4.5:1) für
+       die kleine Schrift des "i" – auf 4.56:1 abgedunkelt. */
+    color: #006ff6;
     font-size: 0.75em;
 }
 
@@ -474,6 +560,7 @@ label {
    im Formular arbeitet, ohne die ganze Seite hoch/runter scrollen zu
    müssen – der Inhalt scrollt stattdessen innerhalb der Karte selbst. */
 .help-card {
+    position: relative;
     margin: 1em 0 1.5em;
     padding: 1.125em 1.375em;
     max-height: 16em;
@@ -515,12 +602,15 @@ label {
 
 .help-card-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    /* Platz für den absolut positionierten .help-card-close-btn freihalten
+       (siehe dort), damit der Titel bei schmalen Karten nicht unter den
+       Button läuft. */
+    padding-right: 1.75em;
     margin-bottom: 1em;
 }
 
-.help-card-header h4 {
+.help-card-header h3 {
     margin: 0;
     color: #000000;
     font-size: 0.875em;
@@ -535,7 +625,7 @@ label {
     margin-bottom: 0;
 }
 
-.help-subsection h5 {
+.help-subsection h4 {
     margin-bottom: 0.875em;
     color: #000000;
     font-size: 0.875em;
@@ -556,7 +646,16 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.footer ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 1.125em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .footer a {
