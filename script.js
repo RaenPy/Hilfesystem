@@ -6,6 +6,12 @@ class HelpSystem {
         this.helpLinks = document.querySelectorAll('.help-link');
         this.microHelpBtns = document.querySelectorAll('.micro-help-btn');
 
+        // Section-Name -> { opener, help }: merkt sich pro Sektion, wodurch
+        // die Bereichshilfe zuletzt geöffnet wurde (Bereichshilfe-Button
+        // oder ein Mikrohilfe-Link samt dessen Panel), damit closeHelpSection
+        // den Fokus gezielt dorthin zurückgeben kann.
+        this.helpCardOpeners = new Map();
+
         this.init();
     }
 
@@ -43,17 +49,25 @@ class HelpSystem {
             });
         });
 
-        // Inline help links open the full help card of the given section
-        // und springen dort direkt zum passenden Abschnitt (falls schon einer
-        // hinterlegt ist)
+        // Inline-Help-Links öffnen die Bereichshilfe fokussiert auf genau
+        // das Thema des auslösenden Felds (nicht die komplette Karte) und
+        // docken direkt am Feld an statt an der Sektion (siehe
+        // openHelpSectionFocused). Das umgebende Mikrohilfe-Panel schließt
+        // sich dabei, damit nicht zweimal ähnlicher Hilfetext untereinander
+        // steht – es öffnet sich beim Schließen der Bereichshilfe wieder
+        // (siehe closeHelpSection).
         this.helpLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = e.currentTarget.getAttribute('data-section');
-                this.openHelpSection(section);
                 const help = e.currentTarget.closest('.inline-help');
                 const topic = this.getTopicFromHelp(help);
-                this.scrollHelpCardToTopic(section, topic);
+
+                if (help && !help.hidden) {
+                    this.hideInlineHelp(help, this.getMicroHelpBtnFor(help));
+                }
+
+                this.openHelpSectionFocused(section, topic, e.currentTarget, help);
                 this.focusHelpCardTopic(section, topic);
             });
         });
@@ -121,6 +135,20 @@ class HelpSystem {
     }
 
     showInlineHelp(help, btn) {
+        // Ist irgendwo eine Bereichshilfe im Fokus-Modus offen (also über
+        // einen Mikrohilfe-Link aktiviert, siehe openHelpSectionFocused),
+        // schließt sie sich zuerst wieder – zwei offene Hilfe-Ebenen für
+        // (potenziell) dasselbe Feld sind redundant, und ein erneuter Klick
+        // aufs i-Icon eines Felds soll immer zur kleinen Mikrohilfe führen,
+        // nicht zusätzlich zur weiterhin offenen Bereichshilfe. Nur
+        // Fokus-Modus-Karten betroffen (entry.help gesetzt) – eine über den
+        // Bereichshilfe-Button geöffnete volle Karte bleibt unangetastet.
+        this.helpCardOpeners.forEach((entry, sec) => {
+            if (entry.help) {
+                this.closeHelpSectionCard(sec);
+            }
+        });
+
         help.hidden = false;
         btn?.setAttribute('aria-expanded', 'true');
 
@@ -215,6 +243,57 @@ class HelpSystem {
         return document.querySelector(`.section-help-btn[data-section="${section}"]`);
     }
 
+    // Läuft von el aus die Ancestor-Kette hoch bis zu dem Element, das
+    // direktes Kind von formSection ist (z.B. .form-row, .form-check.
+    // checkbox-group). Einheitlicher Anker fürs Umhängen der Bereichshilfe,
+    // unabhängig vom Feldtyp – niemals direkt in ein .form-row einfügen
+    // (2-Spalten-Grid für genau 2 .form-group-Kinder, ein drittes Element
+    // würde das Layout zerschießen).
+    findSectionChild(el, formSection) {
+        let node = el;
+        while (node && node.parentElement !== formSection) {
+            node = node.parentElement;
+        }
+        return node;
+    }
+
+    // Verschiebt die Bereichshilfe-Karte direkt hinter den übergebenen Anker
+    // (die Feld-Zeile, siehe findSectionChild) und setzt die CSS-Custom-
+    // Property fürs Andocken auf Feldhöhe (wirkt nur auf Desktop, siehe
+    // .help-card--focused in style.css – im normalen Textfluss auf Mobile
+    // landet die Karte durch die DOM-Verschiebung allein schon direkt am
+    // Feld). anchor wird vom Aufrufer ermittelt statt hier selbst geclimbt,
+    // damit derselbe Anker auch fürs Scrollen wiederverwendet werden kann.
+    relocateHelpCardToField(card, anchor, formSection) {
+        if (!anchor) {
+            return;
+        }
+
+        anchor.after(card);
+        const offset = anchor.getBoundingClientRect().top - formSection.getBoundingClientRect().top;
+        card.style.setProperty('--help-card-top', `${offset}px`);
+        card.classList.add('help-card--focused');
+    }
+
+    // Setzt eine Bereichshilfe-Karte auf ihren Grundzustand zurück: alle
+    // Unterabschnitte wieder sichtbar, zurück an ihren ursprünglichen Platz
+    // im DOM (direkt nach dem .section-header), Fokus-Modus-Styling entfernt.
+    // Wird sowohl vor jedem Öffnen als auch beim Schließen aufgerufen, damit
+    // nie Zustand einer vorherigen Öffnung hängen bleibt.
+    resetHelpCardToDefault(card, formSection) {
+        card.querySelectorAll('.help-subsection[hidden]').forEach(sub => {
+            sub.hidden = false;
+        });
+
+        const header = formSection.querySelector(':scope > .section-header');
+        if (header && card.previousElementSibling !== header) {
+            header.after(card);
+        }
+
+        card.classList.remove('help-card--focused');
+        card.style.removeProperty('--help-card-top');
+    }
+
     toggleHelpSection(section) {
         const card = this.getHelpCard(section);
         if (!card) {
@@ -228,29 +307,106 @@ class HelpSystem {
         }
     }
 
+    // Voller Modus (Bereichshilfe-Button): zeigt wieder alle Unterabschnitte
+    // an der gewohnten Stelle/Position, unabhängig davon, ob die Karte zuvor
+    // im Fokus-Modus offen war.
     openHelpSection(section) {
         const card = this.getHelpCard(section);
         if (!card) {
             return;
         }
 
+        const formSection = card.closest('.form-section');
+        if (formSection) {
+            this.resetHelpCardToDefault(card, formSection);
+        }
+
+        card.hidden = false;
+        const btn = this.getSectionHelpBtn(section);
+        btn?.setAttribute('aria-expanded', 'true');
+        this.helpCardOpeners.set(section, { opener: btn });
+    }
+
+    // Fokus-Modus (Mikrohilfe-Link): zeigt nur den zu topic passenden
+    // Unterabschnitt und dockt die Karte auf Höhe des auslösenden Felds an.
+    // help ist das (bereits geschlossene) Mikrohilfe-Panel, aus dem der Link
+    // stammt – wird beim Schließen der Bereichshilfe wieder geöffnet.
+    openHelpSectionFocused(section, topic, opener, help) {
+        const card = this.getHelpCard(section);
+        const formSection = card?.closest('.form-section');
+        if (!card || !formSection) {
+            return;
+        }
+
+        this.resetHelpCardToDefault(card, formSection);
+
+        if (topic) {
+            card.querySelectorAll('.help-subsection').forEach(sub => {
+                sub.hidden = sub.getAttribute('data-topic') !== topic;
+            });
+        }
+
+        // Vom micro-help-btn aus climben, nicht vom Link: der Link steckt im
+        // help-Panel, das gerade per hideInlineHelp geschlossen wurde (siehe
+        // helpLinks-Handler in init()) – ein verstecktes Element hätte ein
+        // Nullen-Rect. Der micro-help-btn ist Teil der sichtbaren Feld-UI und
+        // bleibt unabhängig davon, wie das help-Panel im Markup hängt (z.B.
+        // bei Checkbox-Feldern wie "Wohnhaft in Deutschland" liegt es direkt
+        // unter .form-section statt im .form-group).
+        const microHelpBtn = help ? this.getMicroHelpBtnFor(help) : null;
+        const anchor = this.findSectionChild(microHelpBtn ?? opener, formSection);
+
+        this.relocateHelpCardToField(card, anchor, formSection);
+
         card.hidden = false;
         this.getSectionHelpBtn(section)?.setAttribute('aria-expanded', 'true');
+        this.helpCardOpeners.set(section, { opener, help });
+
+        // Immer die Feld-Zeile nach oben scrollen, nicht den Hilfetext
+        // innerhalb der Karte (der steht ja jetzt direkt dahinter) – sonst
+        // müsste über das Feld hinweg nach unten gescrollt werden, und genau
+        // das Feld, um das es geht, verschwindet aus dem Viewport.
+        anchor?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     closeHelpSection(section) {
+        this.closeHelpSectionCard(section)?.focus();
+    }
+
+    // Schließt die Karte und räumt Inhalt/Position/Map-Eintrag auf, fokussiert
+    // aber selbst nichts – gibt stattdessen das sinnvolle Fokus-Ziel zurück.
+    // Getrennt von closeHelpSection(), damit ein Cross-Close (siehe
+    // showInlineHelp: eine fokussierte Bereichshilfe wird automatisch
+    // geschlossen, wenn anderswo eine Mikrohilfe geöffnet wird) den Fokus
+    // nicht vom gerade angeklickten Mikrohilfe-Button wegreißt.
+    closeHelpSectionCard(section) {
         const card = this.getHelpCard(section);
         if (!card) {
-            return;
+            return null;
+        }
+
+        const formSection = card.closest('.form-section');
+        if (formSection) {
+            this.resetHelpCardToDefault(card, formSection);
         }
 
         card.hidden = true;
         const btn = this.getSectionHelpBtn(section);
         btn?.setAttribute('aria-expanded', 'false');
-        // Fokus zurück auf das i-icon, egal wie geschlossen wurde (X-Button,
-        // erneuter Klick aufs Icon oder Escape), damit Tastatur-Nutzer nicht
-        // im Nichts landen.
-        btn?.focus();
+
+        // Fokus-Ziel für den Aufrufer: beim Button-Pfad der Bereichshilfe-
+        // Button selbst. Kam die Karte aus einem Mikrohilfe-Link, NICHT der
+        // Link (der steckt in einem Panel, das beim Öffnen der Bereichshilfe
+        // geschlossen wurde, siehe helpLinks-Handler in init(), und ist keine
+        // sinnvolle Landestelle mehr), sondern direkt das Formularfeld, von
+        // dem die Mikrohilfe ursprünglich geöffnet wurde.
+        const entry = this.helpCardOpeners.get(section);
+        this.helpCardOpeners.delete(section);
+
+        const microHelpBtn = entry?.help ? this.getMicroHelpBtnFor(entry.help) : null;
+        const control = microHelpBtn ? this.getAssociatedControl(microHelpBtn) : null;
+        const opener = entry?.opener?.isConnected ? entry.opener : null;
+        return control ?? opener ?? btn ?? null;
     }
 }
 

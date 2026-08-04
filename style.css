@@ -4,9 +4,12 @@
 
 :root {
     --atlas-blue: #2f92d0;
-    /* #008bd2 lag mit 3.73:1 unter dem WCAG-AA-Mindestkontrast (4.5:1) für
-       Text auf Weiß – auf 4.56:1 abgedunkelt, gleicher Blauton. */
-    --atlas-link: #007cbb;
+    /* #007cbb erreichte 4.56:1 auf Weiß (siehe ursprüngliche Herleitung),
+       aber nur 3.94:1 auf --atlas-bg (#eeeeef) – genau dort sitzt u.a. der
+       Breadcrumb. Nochmals auf #0072ac abgedunkelt (gleicher Blauton):
+       4.52:1 auf --atlas-bg, 5.25:1 auf Weiß – deckt damit beide
+       Hintergründe ab, auf denen die Variable verwendet wird. */
+    --atlas-link: #0072ac;
     --atlas-text: #333333;
     --atlas-muted: #5f6368;
     --atlas-border: #dfe3e7;
@@ -379,9 +382,21 @@ label {
     border-color: #4d9bea;
     background: #ffffff;
     /* #2d8cff lag mit 3.33:1 unter dem WCAG-AA-Mindestkontrast (4.5:1) für
-       die kleine Schrift des "i" – auf 4.56:1 abgedunkelt. */
+       das kleine i-Icon – auf 4.56:1 abgedunkelt. */
     color: #006ff6;
     font-size: 0.75em;
+}
+
+/* SVG statt Text-Zeichen fürs "i": Chromium und Firefox zentrieren ein
+   Textzeichen im Flex-Container leicht unterschiedlich (Schriftmetriken),
+   wodurch das "i" in Firefox sichtbar nach unten verschoben wirkte. Ein
+   SVG-Pfad zentriert sich über die Box-Geometrie statt über Baseline/
+   Zeilenhöhe und ist dadurch browserübergreifend konsistent (Pfade aus
+   Bootstrap Icons "info-circle", ohne den Kreis – der kommt schon von der
+   CSS-Border oben). */
+.micro-help-btn svg {
+    width: 1em;
+    height: 1em;
 }
 
 /* Innerhalb eines Feldes schwebt der Button rechts im Feld (wie bei der
@@ -518,16 +533,24 @@ label {
     padding: 0.625em 0.875em;
 }
 
+/* #3398d5 (weißer Button-Text) kam nur auf 3.19:1, #2488c4 im Hover-Zustand
+   nur auf 3.89:1 – beide unter dem WCAG-AA-Mindestkontrast von 4.5:1. Auf
+   #247cb1 (4.58:1) bzw. #1f6996 (5.94:1) abgedunkelt, gleicher Blauton und
+   gleicher proportionaler Helligkeitsabstand zwischen Grund- und
+   Hover-Zustand wie zuvor. */
 .btn-primary {
-    --bs-btn-bg: #3398d5;
-    --bs-btn-border-color: #3398d5;
-    --bs-btn-hover-bg: #2488c4;
-    --bs-btn-hover-border-color: #2488c4;
+    --bs-btn-bg: #247cb1;
+    --bs-btn-border-color: #247cb1;
+    --bs-btn-hover-bg: #1f6996;
+    --bs-btn-hover-border-color: #1f6996;
 }
 
+/* #717b86 kam nur auf 4.30:1 – knapp unter 4.5:1. Auf #6e7782 (4.54:1)
+   abgedunkelt; der Hover-Zustand #626b75 lag mit 5.41:1 bereits über dem
+   Grenzwert und musste nicht angepasst werden. */
 .btn-secondary {
-    --bs-btn-bg: #717b86;
-    --bs-btn-border-color: #717b86;
+    --bs-btn-bg: #6e7782;
+    --bs-btn-border-color: #6e7782;
     --bs-btn-hover-bg: #626b75;
     --bs-btn-hover-border-color: #626b75;
 }
@@ -598,6 +621,16 @@ label {
         background: #ffffff;
         border-radius: var(--atlas-radius);
         box-shadow: 0 0.25em 1em rgba(0, 0, 0, 0.12);
+    }
+
+    /* Fokus-Modus (Bereichshilfe wurde über einen Mikrohilfe-Link statt
+       über den Bereichshilfe-Button geöffnet): statt auf volle Sektionshöhe
+       zu strecken, auf Höhe des auslösenden Felds andocken. --help-card-top
+       wird per JS beim Öffnen gesetzt (siehe HelpSystem.relocateHelpCardToField
+       in script.js). */
+    .help-card.help-card--focused {
+        top: var(--help-card-top, 0);
+        bottom: auto;
     }
 }
 
