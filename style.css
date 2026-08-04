@@ -489,6 +489,23 @@ label {
     text-decoration: none;
 }
 
+/* Bewusst <button>, kein <a href="#">: der Klick löst reines JS-Verhalten
+   aus (öffnet die Bereichshilfe), navigiert nirgendwohin – nicht mal
+   innerhalb der Seite. Screenreader kündigten das bisherige href="#" als
+   "selbe Seite, Link" an, was hier irreführend war (kein echtes Ziel auf
+   der Seite). Als Button sieht/verhält es sich weiterhin wie ein Link im
+   Fließtext (Bootstrap/UA-Button-Defaults zurückgesetzt). */
+.help-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: var(--atlas-link);
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .inline-help a:hover,
 .help-subsection a:hover {
     text-decoration: underline;

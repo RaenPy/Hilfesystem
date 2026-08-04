@@ -54,7 +54,7 @@
                     </div>
 
                     <!-- Bereichshilfe: Zahlungspartner -->
-                    <div class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" role="region" aria-labelledby="help-zahlungspartner-title" hidden>
+                    <div class="help-card" id="help-zahlungspartner" data-section="zahlungspartner" role="region" aria-labelledby="help-zahlungspartner-title" tabindex="-1" hidden>
                         <div class="help-card-header">
                             <h3 id="help-zahlungspartner-title">Bereichshilfe: Zahlungspartner</h3>
                         </div>
@@ -103,10 +103,10 @@
                                 </select>
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Typ" aria-expanded="false" aria-controls="microhelp-typ"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533z"/><path d="M9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
-                            <div class="inline-help" id="microhelp-typ" hidden>
+                            <div class="inline-help" id="microhelp-typ" tabindex="-1" hidden>
                                 <p>Eine natürliche Person ist beispielsweise die Lehrkraft oder die Schüler.</p>
                                 <p>Eine juristische Person ist eine Firma, die Schule.</p>
-                                <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
+                                <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -155,10 +155,10 @@
                         <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Wohnhaft in Deutschland" aria-expanded="false" aria-controls="microhelp-wohnsitz"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533z"/><path d="M9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                     </div>
 
-                    <div class="inline-help" id="microhelp-wohnsitz" hidden>
+                    <div class="inline-help" id="microhelp-wohnsitz" tabindex="-1" hidden>
                         <p>Die Auswahl "Wohnhaft in Deutschland" ist standardmäßig erfasst und bedeutet, dass die PLZ 5-stellig zu erfassen ist sowie eine IBAN mit 22 Stellen (2-stelliger Ländercode DE und 20 Ziffern).</p>
                         <p>Diese Auswahl ist abzuwählen, wenn der Zahlungspartner keine Adresse in Deutschland angegeben hat. Ist diese Auswahl nicht angewählt, kann das entsprechende Land erfasst werden.</p>
-                        <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
+                        <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                     </div>
 
                     <div class="form-group">
@@ -202,11 +202,11 @@
                                 <input type="text" id="steuernr" class="form-control" placeholder="-------">
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuer-ID" aria-expanded="false" aria-controls="microhelp-steuernr"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533z"/><path d="M9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
-                            <div class="inline-help" id="microhelp-steuernr" hidden>
+                            <div class="inline-help" id="microhelp-steuernr" tabindex="-1" hidden>
                                 <p>Die Steuer-ID (steuerliche Identifikationsnummer) ist eine bundeseinheitliche, persönliche und dauerhafte elfstellige Identifikationsnummer, die vom Bundesamt für Steuern vergeben wird.</p>
                                 <p>Diese Nummer finden Sie auf Ihrem Einkommensteuerbescheid und Ihrer Gehaltsabrechnung.</p>
                                 <p>Achtung: Es handelt sich hierbei nicht um die Steuernummer!</p>
-                                <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungspartner">Bereichshilfe</a>.</p>
+                                <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -246,7 +246,7 @@
                     </div>
 
                     <!-- Bereichshilfe: Zahlungsdaten -->
-                    <div class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" role="region" aria-labelledby="help-zahlungsdaten-title" hidden>
+                    <div class="help-card" id="help-zahlungsdaten" data-section="zahlungsdaten" role="region" aria-labelledby="help-zahlungsdaten-title" tabindex="-1" hidden>
                         <div class="help-card-header">
                             <h3 id="help-zahlungsdaten-title">Bereichshilfe: Zahlungsdaten</h3>
                         </div>
@@ -303,10 +303,10 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="inline-help" id="microhelp-faellig" hidden>
+                            <div class="inline-help" id="microhelp-faellig" tabindex="-1" hidden>
                                 <p>Hier ist die Fälligkeit/der Auszahlungszeitpunkt gemäß Rechnung/Zahlungsaufforderung zu erfassen. Dieses Datum muss in der Zukunft liegen.</p>
                                 <p>Die Fälligkeit darf nicht im nächsten Jahr oder mehr als 6 Monate in der Zukunft liegen.</p>
-                                <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungsdaten">Bereichshilfe</a>.</p>
+                                <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" data-section="zahlungsdaten">Bereichshilfe</button>.</p>
                             </div>
                         </div>
                     </div>
@@ -317,10 +317,10 @@
                             <input type="text" id="verwendung" class="form-control">
                             <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Verwendungszweck" aria-expanded="false" aria-controls="microhelp-verwendung"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533z"/><path d="M9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                         </div>
-                        <div class="inline-help" id="microhelp-verwendung" hidden>
+                        <div class="inline-help" id="microhelp-verwendung" tabindex="-1" hidden>
                             <p>Bitte hier den Verwendungszweck gemäß der Rechnung eintragen, welcher auf der Ihnen vorliegenden Rechnung genannt ist, z.B. Rechnungsnummer, Buchungskennzeichen, Buchungsnummer, Belegnummer, Kundennummer, usw.</p>
                             <p>Diese Daten erscheinen auf dem Kontoauszug Ihres Zahlungspartners.</p>
-                            <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungsdaten">Bereichshilfe</a>.</p>
+                            <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" data-section="zahlungsdaten">Bereichshilfe</button>.</p>
                         </div>
                     </div>
 
@@ -330,9 +330,9 @@
                             <input type="text" id="vermerkt" class="form-control">
                             <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Interner Vermerk" aria-expanded="false" aria-controls="microhelp-vermerkt"><svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533z"/><path d="M9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                         </div>
-                        <div class="inline-help" id="microhelp-vermerkt" hidden>
+                        <div class="inline-help" id="microhelp-vermerkt" tabindex="-1" hidden>
                             <p>Hier haben Sie die Möglichkeit, Informationen/Vermerke für Ihren internen Gebrauch zu erfassen (z.B. Informationen zur Mobilität, Informationen über Versicherungen, usw.). Diese Eingaben werden nicht in der Buchung erfasst, sondern sind nur von Ihnen einsehbar.</p>
-                            <p>Weitere Informationen und Hilfen finden Sie in der <a href="#" class="help-link" data-section="zahlungsdaten">Bereichshilfe</a>.</p>
+                            <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" data-section="zahlungsdaten">Bereichshilfe</button>.</p>
                         </div>
                     </div>
 
@@ -359,7 +359,7 @@
                     </div>
 
                     <!-- Bereichshilfe: Anhänge -->
-                    <div class="help-card" id="help-anhaenge" data-section="anhaenge" role="region" aria-labelledby="help-anhaenge-title" hidden>
+                    <div class="help-card" id="help-anhaenge" data-section="anhaenge" role="region" aria-labelledby="help-anhaenge-title" tabindex="-1" hidden>
                         <div class="help-card-header">
                             <h3 id="help-anhaenge-title">Bereichshilfe: Anhänge</h3>
                         </div>

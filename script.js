@@ -163,6 +163,12 @@ class HelpSystem {
             control.setAttribute('aria-describedby', [...describedBy].join(' '));
         }
 
+        // Fokus ins Panel selbst (tabindex="-1" im Markup), damit der neue
+        // Hilfetext von Screenreadern automatisch vorgelesen wird, statt nur
+        // still im Hintergrund zu erscheinen, während der Fokus weiter auf
+        // dem i-Icon steht (per NVDA-Test aufgefallen).
+        help.focus({ preventScroll: true });
+
         // Falls die Bereichshilfe der Sektion bereits offen ist, direkt zum
         // passenden Abschnitt scrollen (no-op, falls noch keiner hinterlegt
         // ist oder die Bereichshilfe geschlossen ist)
@@ -325,6 +331,14 @@ class HelpSystem {
         const btn = this.getSectionHelpBtn(section);
         btn?.setAttribute('aria-expanded', 'true');
         this.helpCardOpeners.set(section, { opener: btn });
+
+        // Fokus auf die Karte selbst (role="region", tabindex="-1" im
+        // Markup), damit sie von Screenreadern vorgelesen wird. Bisher blieb
+        // der Fokus beim öffnenden Button stehen und die neu sichtbare
+        // Bereichshilfe wurde dadurch nicht automatisch angesagt (per
+        // NVDA-Test aufgefallen) – anders als im Fokus-Modus, wo bereits
+        // gezielt in den passenden Unterabschnitt fokussiert wird.
+        card.focus({ preventScroll: true });
     }
 
     // Fokus-Modus (Mikrohilfe-Link): zeigt nur den zu topic passenden
