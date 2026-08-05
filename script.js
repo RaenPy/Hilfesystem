@@ -533,7 +533,11 @@ function setupConditionalFields(helpSystem) {
 
             microHelpBtn.disabled = disabled;
 
-            const help = helpSystem.getInlineHelp(microHelpBtn);
+            // helpSystem fehlt in der Baseline-Variante (siehe
+            // DOMContentLoaded unten) – Feld-Deaktivierung selbst bleibt in
+            // beiden Varianten identisch, nur das Mikrohilfe-Panel gibt es
+            // dort gar nicht erst zu schließen.
+            const help = helpSystem?.getInlineHelp(microHelpBtn);
             if (disabled && help && !help.hidden) {
                 helpSystem.hideInlineHelp(help, microHelpBtn);
             }
@@ -562,7 +566,14 @@ function setDefaultDueDate() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    const helpSystem = new HelpSystem();
+    // Baseline-Variante (?variante=baseline, siehe Inline-Script im <head>
+    // von index.html): HelpSystem wird gar nicht erst instanziiert, statt
+    // nur sein Markup per CSS zu verstecken – so laufen dort keine
+    // Klick-Listener für unsichtbare Hilfesystem-Buttons im Hintergrund.
+    // Die übrige Formular-Logik (Datumsfelder, Feld-Abhängigkeiten) ist Teil
+    // des Formulars selbst und läuft in beiden Varianten identisch.
+    const baseline = document.documentElement.classList.contains('baseline');
+    const helpSystem = baseline ? null : new HelpSystem();
     setDefaultDueDate();
     setupDateFieldControls();
     setupConditionalFields(helpSystem);

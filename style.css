@@ -365,13 +365,17 @@ label {
     position: relative;
 }
 
-.input-with-help .form-control {
+/* Nur außerhalb der Baseline-Variante (siehe Abschnitt am Dateiende): Platz
+   fürs Mikrohilfe-Icon reservieren. In der Baseline gibt es das Icon nicht,
+   das Feld fällt dadurch automatisch auf das normale .form-control-Padding
+   zurück statt auf einen manuell nachgezogenen Ersatzwert. */
+html:not(.baseline) .input-with-help .form-control {
     padding-right: 2.625em;
 }
 
 /* form-select hat schon ein natives Pfeil-Icon rechts – zusätzlicher
    Platz fürs Mikrohilfe-Icon links davon, statt es zu überlagern. */
-.input-with-help .form-select {
+html:not(.baseline) .input-with-help .form-select {
     padding-right: 4.25em;
 }
 
@@ -760,4 +764,26 @@ label {
     .footer {
         flex-wrap: wrap;
     }
+}
+
+/* ==========================================================================
+   Baseline-Variante (?variante=baseline, siehe Inline-Script in index.html)
+   Formular ohne Hilfesystem für den kontrollierten Vergleich (TF2). Blendet
+   alle Hilfesystem-Elemente aus (display:none nimmt sie auch aus Tab-
+   Reihenfolge und Accessibility-Tree – für AT/Tastatur nicht vorhanden,
+   nicht nur unsichtbar) und setzt die dafür reservierten Abstände zurück,
+   damit keine leeren Lücken entstehen, wo sonst ein Icon säße.
+   ========================================================================== */
+html.baseline .section-help-btn,
+html.baseline .micro-help-btn,
+html.baseline .help-card,
+html.baseline .inline-help {
+    display: none;
+}
+
+/* 6em war für 3 Icons (Löschen, Mikrohilfe, Kalender) reserviert – ohne
+   Mikrohilfe bleiben 2, also minus eine Icon-Breite (1.25em) plus deren
+   Lücke zum Nachbar-Icon (0.5em). */
+html.baseline .input-with-help--date .form-control {
+    padding-right: 4.25em;
 }
