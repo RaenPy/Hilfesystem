@@ -687,7 +687,8 @@ html:not(.baseline) .input-with-help .form-select {
     font-weight: 700;
 }
 
-.help-subsection p {
+.help-subsection p,
+.help-card-hint p {
     margin-bottom: 1.125em;
     color: #000000;
     font-size: 0.875em;

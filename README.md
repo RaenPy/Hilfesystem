@@ -1,6 +1,6 @@
 # Hilfesystem
 
-Prototyp eines **zweistufigen, kontextuellen Hilfesystems** für Web-Formulare, am Beispiel des Formulars *"Zahlung verausgaben"* aus dem Fachverfahren Erasmus+ (Design-Look **at:las**). Entsteht im Rahmen einer Bachelorarbeit zu Barrierefreiheit in Verwaltungsportalen.
+Prototyp eines **kontextuellen Hilfesystems** für Web-Formulare, am Beispiel des Formulars *"Zahlung verausgaben"* aus dem Fachverfahren Erasmus+ (Design-Look **at:las**). Entsteht im Rahmen einer Bachelorarbeit zu Barrierefreiheit in Verwaltungsportalen.
 
 ## Ausprobieren
 
@@ -14,12 +14,6 @@ open index.html
 # oder lokal servieren:
 npx serve .
 ```
-
-## Die zwei Hilfe-Ebenen
-
-- **Bereichshilfe**: `i`-Button im Header jedes Formularabschnitts öffnet eine seitliche Karte mit ausführlichen Erklärungen zu allen Feldern des Abschnitts.
-- **Mikrohilfe**: `i`-Button an einzelnen Feldern öffnet eine kurze, feldspezifische Erklärung direkt darunter.
-- Jede Mikrohilfe verlinkt auf "Weitere Informationen in der Bereichshilfe" — das öffnet die Bereichshilfe fokussiert auf genau das passende Thema.
 
 ## Bedienung
 
@@ -35,4 +29,4 @@ Ist an anderer Stelle bereits eine solche kontextuell geöffnete Bereichshilfe o
 
 ## Dateien
 
-Drei Dateien, keine weitere Modul-Aufteilung: `index.html` (Markup), `style.css` (Styling), `script.js` (`HelpSystem`-Klasse steuert beide Hilfe-Ebenen, plus Formular-Logik wie Datumsfelder und Feld-Abhängigkeiten).
+Drei Dateien, keine weitere Modul-Aufteilung: `index.html` (Markup), `style.css` (Styling), `script.js` (`HelpSystem`-Klasse steuert Mikro- und Bereichshilfe, plus Formular-Logik wie Datumsfelder und Feld-Abhängigkeiten).
