@@ -76,7 +76,7 @@
                                 <li>die vollständigen Personendaten oder Firmendaten</li>
                                 <li>die aktuelle Anschrift</li>
                                 <li>die Bankverbindung (IBAN, bei Konten außerhalb Deutschlands zusätzlich BIC)</li>
-                                <li>bei einer Honorarzahlung zusätzlich die Steuer-ID und das Geburtsdatum, bei einem Unternehmen die Steuernummer</li>
+                                <li>bei einer Honorarzahlung zusätzlich die Steuer-ID und das Geburtsdatum, bei einer juristischen Person die Steuernummer</li>
                             </ul>
                         </div>
 
@@ -84,9 +84,9 @@
                             <h4>Typ</h4>
                             <ul>
                                 <li>Natürliche Person bedeutet: Die Zahlung geht an einen einzelnen Menschen, zum Beispiel an eine Lehrkraft oder an Schülerinnen und Schüler.</li>
-                                <li>Unternehmen bedeutet: Die Zahlung geht an eine Organisation, zum Beispiel an eine Schule, einen Verein oder eine Firma. Der Fachbegriff dafür ist juristische Person.</li>
+                                <li>Juristische Person bedeutet: Die Zahlung geht an eine Organisation, zum Beispiel an eine Schule, einen Verein oder eine Firma.</li>
                             </ul>
-                            <p>Wenn Sie Unternehmen wählen, ist das Feld Anrede gesperrt, weil eine Organisation keine Anrede hat. Bei einer Honorarzahlung tragen Sie dann die Steuernummer statt der Steuer-ID ein.</p>
+                            <p>Wenn Sie Juristische Person wählen, tragen Sie den Namen der Organisation in das Feld Name (juristische Person) ein. Das Feld Anrede ist dann gesperrt, weil eine Organisation keine Anrede hat. Bei einer Honorarzahlung tragen Sie die Steuernummer statt der Steuer-ID ein.</p>
                         </div>
 
                         <div class="help-subsection" data-topic="wohnsitz" tabindex="-1">
@@ -121,7 +121,7 @@
                             <p>Eine Honorarzahlung ist eine Zahlung für eine ehrenamtliche oder nebenberufliche Tätigkeit. Solche Zahlungen werden dem Finanzamt gemeldet. Deshalb brauchen Sie dafür weitere Angaben:</p>
                             <ul>
                                 <li>bei einer natürlichen Person die Steuer-ID und das Geburtsdatum</li>
-                                <li>bei einem Unternehmen die Steuernummer</li>
+                                <li>bei einer juristischen Person die Steuernummer</li>
                             </ul>
                             <p>Ohne Häkchen sind diese Felder gesperrt.</p>
                         </div>
@@ -135,12 +135,8 @@
 
                         <div class="help-subsection" data-topic="steuernummer" tabindex="-1">
                             <h4>Steuernummer</h4>
-                            <p>Die Steuernummer vergibt das Finanzamt an das Unternehmen. Das Unternehmen findet sie zum Beispiel auf Schreiben des Finanzamts oder auf seinen Rechnungen.</p>
-                            <p>Sie brauchen die Steuernummer nur bei einer Honorarzahlung an ein Unternehmen.</p>
-                        </div>
-
-                        <div class="help-card-hint">
-                            <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
+                            <p>Die Steuernummer vergibt das Finanzamt an die Organisation. Die Organisation findet sie zum Beispiel auf Schreiben des Finanzamts oder auf ihren Rechnungen.</p>
+                            <p>Sie brauchen die Steuernummer nur bei einer Honorarzahlung an eine juristische Person.</p>
                         </div>
 
                         <button class="help-card-close-btn" aria-label="Bereichshilfe schließen">
@@ -156,12 +152,12 @@
                             <div class="input-with-help">
                                 <select id="typ" class="form-select">
                                     <option>Natürliche Person</option>
-                                    <option>Unternehmen</option>
+                                    <option>Juristische Person</option>
                                 </select>
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Typ" aria-expanded="false" aria-controls="microhelp-typ"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
                             <div class="inline-help" id="microhelp-typ" tabindex="-1" hidden>
-                                <p>Wählen Sie, ob die Zahlung an einen einzelnen Menschen oder an eine Organisation geht.</p>
+                                <p>Wählen Sie, ob die Zahlung an einen einzelnen Menschen oder an eine Organisation geht. Eine Organisation, zum Beispiel eine Schule oder Firma, ist eine juristische Person.</p>
                                 <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungspartner Typ" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                             </div>
                         </div>
@@ -180,6 +176,14 @@
                         <div class="form-group">
                             <label for="vorname">Vorname</label>
                             <input type="text" id="vorname" class="form-control">
+                        </div>
+                        <!-- Wie im Original: bei Typ Juristische Person ersetzt dieses
+                             Feld Vorname und Nachname; es steht an der Stelle des
+                             Vornamens, der Platz des Nachnamens bleibt leer
+                             (Umschaltung in setupConditionalFields) -->
+                        <div class="form-group" hidden>
+                            <label for="name-jp">Name (juristische Person)</label>
+                            <input type="text" id="name-jp" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="nachname">Nachname</label>
@@ -290,7 +294,7 @@
                                 <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungspartner Steuer-ID" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                             </div>
                         </div>
-                        <!-- Wie im Original: bei Typ Unternehmen ersetzt die Steuernummer
+                        <!-- Wie im Original: bei Typ Juristische Person ersetzt die Steuernummer
                              die Steuer-ID (Umschaltung in setupConditionalFields) -->
                         <div class="form-group input-help-group" hidden>
                             <label for="steuernummer">Steuernummer</label>
@@ -299,7 +303,7 @@
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuernummer" aria-expanded="false" aria-controls="microhelp-steuernummer"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
                             <div class="inline-help" id="microhelp-steuernummer" tabindex="-1" hidden>
-                                <p>Tragen Sie die Steuernummer des Unternehmens ein. Sie ist nicht dasselbe wie die Steuer-ID.</p>
+                                <p>Tragen Sie die Steuernummer der Organisation ein. Sie ist nicht dasselbe wie die Steuer-ID.</p>
                                 <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungspartner Steuernummer" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                             </div>
                         </div>
@@ -372,16 +376,12 @@
                                 <li>Leerzeichen</li>
                                 <li>Schrägstrich, Fragezeichen, Doppelpunkt, runde Klammern, Punkt, Komma, Apostroph, Pluszeichen und Bindestrich</li>
                             </ul>
-                            <p>Schreiben Sie Umlaute aus, zum Beispiel ae statt ä und ss statt ß. Mit anderen Zeichen kann die Zahlung nicht übermittelt werden. Schreiben Sie keine vertraulichen Angaben hinein.</p>
+                            <p>Schreiben Sie Umlaute aus, zum Beispiel ae statt ä und ss statt ß. Mit anderen Zeichen kann die Zahlung nicht übermittelt werden.</p>
                         </div>
 
                         <div class="help-subsection" data-topic="vermerkt" tabindex="-1">
                             <h4>Interner Vermerk</h4>
                             <p>Der interne Vermerk ist freiwillig. Sie können ihn zum Beispiel für Kommentare, zur Kennzeichnung der einzelnen Mobilitäten oder für die Belegnummer nutzen. Er wird nicht an die Staatsoberkasse und nicht an den Zahlungspartner übermittelt.</p>
-                        </div>
-
-                        <div class="help-card-hint">
-                            <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
 
                         <button class="help-card-close-btn" aria-label="Bereichshilfe schließen">
@@ -484,10 +484,6 @@
                                 <li>höchstens 2,8 MB pro Anhang</li>
                             </ul>
                             <p>Ein Kommentar zu den Anhängen ist freiwillig.</p>
-                        </div>
-
-                        <div class="help-card-hint">
-                            <p><strong>Hinweis:</strong> Für weitere Fragen und Informationen rund um das Fachverfahren Erasmus+ besuchen Sie die <a href="#">allgemeine Dokumentation</a> und den <a href="#">FAQ-Bereich</a>.</p>
                         </div>
 
                         <button class="help-card-close-btn" aria-label="Bereichshilfe schließen">

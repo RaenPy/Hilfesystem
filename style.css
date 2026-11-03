@@ -808,7 +808,10 @@ html:not(.baseline) .input-with-help .form-select {
     margin-bottom: 3.5em;
 }
 
-.help-subsection:last-child {
+/* Letzter sichtbarer Unterabschnitt: kein Abstand mehr nach unten.
+   :last-child greift nicht, weil der Schließen-Button im DOM als letztes
+   Kind folgt; im Feldmodus sind die nachfolgenden Abschnitte [hidden]. */
+.help-subsection:not(:has(~ .help-subsection:not([hidden]))) {
     margin-bottom: 0;
 }
 
@@ -820,8 +823,7 @@ html:not(.baseline) .input-with-help .form-select {
 }
 
 .help-subsection p,
-.help-subsection ul,
-.help-card-hint p {
+.help-subsection ul {
     margin-bottom: 1.125em;
     color: #000000;
     font-size: 0.875em;

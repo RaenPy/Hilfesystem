@@ -547,9 +547,12 @@ function setupDateFieldControls() {
 
 // Koppelt abhängige Felder an Typ, Wohnsitz und Honorarzahlung wie im
 // Original: "Land" nur, wenn der Zahlungspartner NICHT in Deutschland wohnt;
-// "Anrede" entfällt beim Typ "Unternehmen"; bei einer Honorarzahlung braucht
-// eine natürliche Person Steuer-ID und Geburtsdatum, ein Unternehmen statt
-// der Steuer-ID die Steuernummer (die beiden Felder werden ausgetauscht).
+// "Anrede" entfällt beim Typ "Juristische Person", Vorname und Nachname werden
+// dann durch ein einziges Feld "Name (juristische Person)" ersetzt (an der
+// Stelle des Vornamens, der Platz des Nachnamens bleibt leer); bei einer
+// Honorarzahlung braucht eine natürliche Person Steuer-ID und Geburtsdatum,
+// eine juristische Person statt der Steuer-ID die Steuernummer (die beiden
+// Felder werden ausgetauscht).
 // Gesperrte Felder werden deaktiviert (und damit aus der Tab-Reihenfolge
 // genommen), nicht nur ausgegraut – samt ihrer Buttons (Mikrohilfe,
 // Kalender, Löschen). Ein bereits geöffnetes Mikrohilfe-Panel wird
@@ -562,7 +565,7 @@ function setupConditionalFields(helpSystem) {
         return;
     }
 
-    const isPerson = () => typ.value !== 'Unternehmen';
+    const isPerson = () => typ.value !== 'Juristische Person';
 
     const syncField = (fieldId, { disabled = () => false, hidden = () => false }) => {
         const field = document.getElementById(fieldId);
@@ -596,6 +599,9 @@ function setupConditionalFields(helpSystem) {
     const syncs = [
         syncField('land', { disabled: () => wohnsitz.checked }),
         syncField('anrede', { disabled: () => !isPerson() }),
+        syncField('vorname', { hidden: () => !isPerson() }),
+        syncField('nachname', { hidden: () => !isPerson() }),
+        syncField('name-jp', { hidden: isPerson }),
         syncField('steuernr', { disabled: () => !honorar.checked, hidden: () => !isPerson() }),
         syncField('steuernummer', { disabled: () => !honorar.checked, hidden: isPerson }),
         syncField('geburtsdatum', { disabled: () => !(honorar.checked && isPerson()) }),
