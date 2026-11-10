@@ -15,7 +15,9 @@
             document.documentElement.classList.add('baseline');
         }
     </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Bootstrap 5.3.3 lokal statt CDN: Nutzertest läuft ohne Internet
+         (Datei unverändert, SHA-384 = offizieller SRI-Hash). -->
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -71,7 +73,7 @@
                         </div>
 
                         <div class="help-subsection">
-                            <p>In diesem Abschnitt erfassen Sie, an wen die Zahlung geht: an einen einzelnen Menschen, zum Beispiel eine Lehrkraft, oder an eine Organisation, zum Beispiel eine Schule oder Firma. Halten Sie dafür folgende Angaben des Zahlungspartners bereit:</p>
+                            <p>In diesem Abschnitt erfassen Sie den Zahlungspartner, also an wen die Zahlung geht: an einen einzelnen Menschen, zum Beispiel eine Lehrkraft, oder an eine Organisation, zum Beispiel eine Schule oder Firma. Halten Sie dafür folgende Angaben des Zahlungspartners bereit:</p>
                             <ul>
                                 <li>die vollständigen Personendaten oder Firmendaten</li>
                                 <li>die aktuelle Anschrift</li>
@@ -110,7 +112,7 @@
                             <h4>Abweichender Kontoinhaber</h4>
                             <p>Meistens gehört das Konto dem Zahlungspartner. Dann lassen Sie das Feld leer. Gehört das Konto jemand anderem, tragen Sie den Kontoinhaber in zwei Teilen ein. Trennen Sie die beiden Teile immer mit einem Komma:</p>
                             <ul>
-                                <li>bei einem einzelnen Menschen zuerst den Nachnamen, dann den Vornamen, zum Beispiel: Mustermann, Max Michael</li>
+                                <li>bei einem einzelnen Menschen zuerst den Nachnamen, dann alle Vornamen, zum Beispiel: Mustermann, Max Michael</li>
                                 <li>bei einer Organisation zuerst den Firmennamen, dann das Wort Firma, zum Beispiel: Musterfirma GmbH, Firma</li>
                             </ul>
                             <p>Jeder Teil darf höchstens 35 Zeichen lang sein, zusammen höchstens 70 Zeichen.</p>
@@ -128,7 +130,7 @@
 
                         <div class="help-subsection" data-topic="steuernr" tabindex="-1">
                             <h4>Steuer-ID</h4>
-                            <p>Die Steuer-ID ist eine 11-stellige Nummer. Jede in Deutschland gemeldete Person bekommt sie einmal vom Bundeszentralamt für Steuern. Sie bleibt ein Leben lang gleich.</p>
+                            <p>Die Steuer-ID ist eine 11-stellige Nummer. Jede in Deutschland gemeldete Person bekommt sie nur einmal im Leben vom Bundeszentralamt für Steuern. Sie ändert sich nicht.</p>
                             <p>Der Zahlungspartner findet sie zum Beispiel auf dem Einkommensteuerbescheid oder der Lohnabrechnung.</p>
                             <p>Verwechseln Sie die Steuer-ID nicht mit der Steuernummer. Die Steuernummer vergibt das Finanzamt, und sie kann sich ändern. Sie brauchen die Steuer-ID nur bei einer Honorarzahlung an eine natürliche Person.</p>
                         </div>
@@ -175,7 +177,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="vorname">Vorname</label>
-                            <input type="text" id="vorname" class="form-control">
+                            <input type="text" id="vorname" class="form-control" autocomplete="off">
                         </div>
                         <!-- Wie im Original: bei Typ Juristische Person ersetzt dieses
                              Feld Vorname und Nachname; es steht an der Stelle des
@@ -183,30 +185,30 @@
                              (Umschaltung in setupConditionalFields) -->
                         <div class="form-group" hidden>
                             <label for="name-jp">Name (juristische Person)</label>
-                            <input type="text" id="name-jp" class="form-control">
+                            <input type="text" id="name-jp" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="nachname">Nachname</label>
-                            <input type="text" id="nachname" class="form-control">
+                            <input type="text" id="nachname" class="form-control" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="form-row address-row">
                         <div class="form-group">
                             <label for="strasse">Straße</label>
-                            <input type="text" id="strasse" class="form-control">
+                            <input type="text" id="strasse" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="hausnummer">Hausnummer</label>
-                            <input type="text" id="hausnummer" class="form-control">
+                            <input type="text" id="hausnummer" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="postleitzahl">Postleitzahl</label>
-                            <input type="text" id="postleitzahl" class="form-control">
+                            <input type="text" id="postleitzahl" class="form-control" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="ort">Ort</label>
-                            <input type="text" id="ort" class="form-control">
+                            <input type="text" id="ort" class="form-control" autocomplete="off">
                         </div>
                     </div>
 
@@ -217,7 +219,7 @@
                     </div>
 
                     <div class="inline-help" id="microhelp-wohnsitz" tabindex="-1" hidden>
-                        <p>Lassen Sie das Häkchen gesetzt, wenn der Zahlungspartner in Deutschland wohnt. Sonst entfernen Sie es und wählen das Land aus.</p>
+                        <p>Wenn der Zahlungspartner in Deutschland wohnt, lassen Sie das Häkchen gesetzt. Sonst entfernen Sie es und wählen das Land aus.</p>
                         <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungspartner Wohnhaft in Deutschland" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                     </div>
 
@@ -238,7 +240,7 @@
                         <div class="form-group">
                             <label for="iban">IBAN</label>
                             <div class="input-with-help">
-                                <input type="text" id="iban" class="form-control">
+                                <input type="text" id="iban" class="form-control" autocomplete="off">
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe IBAN" aria-expanded="false" aria-controls="microhelp-iban"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
                             <div class="inline-help" id="microhelp-iban" tabindex="-1" hidden>
@@ -249,7 +251,7 @@
                         <div class="form-group">
                             <label for="bic">BIC (optional)</label>
                             <div class="input-with-help">
-                                <input type="text" id="bic" class="form-control">
+                                <input type="text" id="bic" class="form-control" autocomplete="off">
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe BIC" aria-expanded="false" aria-controls="microhelp-bic"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
                             <div class="inline-help" id="microhelp-bic" tabindex="-1" hidden>
@@ -262,11 +264,11 @@
                     <div class="form-group">
                         <label for="konto">Abweichender Kontoinhaber (optional)</label>
                         <div class="input-with-help">
-                            <input type="text" id="konto" class="form-control" maxlength="70">
+                            <input type="text" id="konto" class="form-control" maxlength="70" autocomplete="off">
                             <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Abweichender Kontoinhaber" aria-expanded="false" aria-controls="microhelp-konto"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                         </div>
                         <div class="inline-help" id="microhelp-konto" tabindex="-1" hidden>
-                            <p>Füllen Sie das Feld nur aus, wenn das Konto nicht dem Zahlungspartner gehört. Tragen Sie zuerst den Nachnamen ein, dann ein Komma und den Vornamen, zum Beispiel: Mustermann, Max</p>
+                            <p>Wenn das Konto dem Zahlungspartner gehört, lassen Sie das Feld leer. Sonst tragen Sie zuerst den Nachnamen ein, dann ein Komma und den Vornamen, zum Beispiel: Mustermann, Max</p>
                             <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungspartner Abweichender Kontoinhaber" data-section="zahlungspartner">Bereichshilfe</button>.</p>
                         </div>
                     </div>
@@ -286,7 +288,7 @@
                         <div class="form-group input-help-group">
                             <label for="steuernr">Steuer-ID</label>
                             <div class="input-with-help">
-                                <input type="text" id="steuernr" class="form-control" placeholder="-------">
+                                <input type="text" id="steuernr" class="form-control" placeholder="-------" autocomplete="off">
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuer-ID" aria-expanded="false" aria-controls="microhelp-steuernr"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
                             <div class="inline-help" id="microhelp-steuernr" tabindex="-1" hidden>
@@ -299,7 +301,7 @@
                         <div class="form-group input-help-group" hidden>
                             <label for="steuernummer">Steuernummer</label>
                             <div class="input-with-help">
-                                <input type="text" id="steuernummer" class="form-control">
+                                <input type="text" id="steuernummer" class="form-control" autocomplete="off">
                                 <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Steuernummer" aria-expanded="false" aria-controls="microhelp-steuernummer"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                             </div>
                             <div class="inline-help" id="microhelp-steuernummer" tabindex="-1" hidden>
@@ -351,12 +353,12 @@
                         </div>
 
                         <div class="help-subsection">
-                            <p>In diesem Abschnitt erfassen Sie die Angaben zur Zahlung: Betrag, Fälligkeit und Verwendungszweck. Halten Sie dafür die Rechnung oder Zahlungsaufforderung bereit. Dort finden Sie diese Angaben. Ein interner Vermerk ist freiwillig und wird nicht an den Zahlungspartner übermittelt.</p>
+                            <p>In diesem Abschnitt erfassen Sie die Angaben zur Zahlung: Betrag, Fälligkeit und Verwendungszweck. Halten Sie dafür die Rechnung oder Zahlungsaufforderung bereit. Dort finden Sie diese Angaben. Ein interner Vermerk ist eine Notiz, die nicht an den Zahlungspartner übermittelt wird. Er ist freiwillig.</p>
                         </div>
 
                         <div class="help-subsection" data-topic="faellig" tabindex="-1">
                             <h4>Fällig am</h4>
-                            <p>Das Fälligkeitsdatum steht meist auf der Rechnung oder der Zahlungsaufforderung, zum Beispiel als zahlbar bis. Der heutige Tag ist schon eingetragen. Für das Datum gilt:</p>
+                            <p>Das Fälligkeitsdatum ist der Tag, bis zu dem die Rechnung bezahlt sein muss. Es steht meist auf der Rechnung oder der Zahlungsaufforderung, zum Beispiel als zahlbar bis. Der heutige Tag ist schon eingetragen. Für das Datum gilt:</p>
                             <ul>
                                 <li>nicht vor dem heutigen Tag</li>
                                 <li>höchstens 6 Monate nach dem heutigen Tag</li>
@@ -368,7 +370,7 @@
                         <div class="help-subsection" data-topic="verwendung" tabindex="-1">
                             <h4>Verwendungszweck</h4>
                             <p>Der Verwendungszweck steht auf dem Kontoauszug des Zahlungspartners. Daran erkennt er, wofür das Geld ist. Tragen Sie immer die Rechnungsnummer ein.</p>
-                            <p>Hat jemand die Rechnung vorab selbst bezahlt, ist das eine Vorabauslage. Nennen Sie dann zusätzlich den ursprünglichen Zahlungsempfänger, zum Beispiel: Vorabauslage für Muster GmbH Rnr. 12345</p>
+                            <p>Hat jemand die Rechnung bereits selbst bezahlt, ist das eine Vorabauslage. Nennen Sie dann zusätzlich den ursprünglichen Zahlungsempfänger, zum Beispiel: Vorabauslage für Muster GmbH Rnr. 12345</p>
                             <p>Sie können höchstens 113 Zeichen eingeben. Leerzeichen zählen mit. Erlaubt sind nur diese Zeichen:</p>
                             <ul>
                                 <li>Buchstaben von A bis Z, groß und klein, ohne Umlaute und ohne ß</li>
@@ -381,7 +383,7 @@
 
                         <div class="help-subsection" data-topic="vermerkt" tabindex="-1">
                             <h4>Interner Vermerk</h4>
-                            <p>Der interne Vermerk ist freiwillig. Sie können ihn zum Beispiel für Kommentare, zur Kennzeichnung der einzelnen Mobilitäten oder für die Belegnummer nutzen. Er wird nicht an die Staatsoberkasse und nicht an den Zahlungspartner übermittelt.</p>
+                            <p>Der interne Vermerk ist freiwillig. Er wird nicht an die Staatsoberkasse und nicht an den Zahlungspartner übermittelt. Sie können ihn zum Beispiel für Kommentare, für die Belegnummer oder zur Kennzeichnung der einzelnen Mobilitäten nutzen. Eine Mobilität ist ein geförderter Aufenthalt im Ausland, zum Beispiel ein Schüleraustausch oder eine Fortbildung.</p>
                         </div>
 
                         <button class="help-card-close-btn" aria-label="Bereichshilfe schließen">
@@ -394,7 +396,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="betrag">Auszahlungsbetrag</label>
-                            <input type="text" id="betrag" class="form-control" value="0,00 €">
+                            <input type="text" id="betrag" class="form-control" value="0,00 €" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label for="faellig">Fällig am</label>
@@ -417,7 +419,7 @@
                                 </div>
                             </div>
                             <div class="inline-help" id="microhelp-faellig" tabindex="-1" hidden>
-                                <p>Tragen Sie das Fälligkeitsdatum aus der Rechnung ein. Es darf nicht in der Vergangenheit und höchstens 6 Monate in der Zukunft liegen.</p>
+                                <p>Tragen Sie das Fälligkeitsdatum aus der Rechnung ein. Das ist der Tag, bis zu dem die Rechnung bezahlt sein muss. Das Datum darf nicht in der Vergangenheit und höchstens 6 Monate in der Zukunft liegen.</p>
                                 <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungsdaten Fällig am" data-section="zahlungsdaten">Bereichshilfe</button>.</p>
                             </div>
                         </div>
@@ -426,11 +428,11 @@
                     <div class="form-group">
                         <label for="verwendung">Verwendungszweck</label>
                         <div class="input-with-help">
-                            <input type="text" id="verwendung" class="form-control" maxlength="113">
+                            <input type="text" id="verwendung" class="form-control" maxlength="113" autocomplete="off">
                             <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Verwendungszweck" aria-expanded="false" aria-controls="microhelp-verwendung"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                         </div>
                         <div class="inline-help" id="microhelp-verwendung" tabindex="-1" hidden>
-                            <p>Tragen Sie die Rechnungsnummer ein, damit der Zahlungspartner die Zahlung erkennt. Höchstens 113 Zeichen, ohne Umlaute und ohne ß.</p>
+                            <p>Tragen Sie die Rechnungsnummer ein, damit der Zahlungspartner die Zahlung erkennt. Höchstens 113 Zeichen, ohne Umlaute (ä, ö, ü) und ohne ß.</p>
                             <p>Weitere Informationen und Hilfen finden Sie in der <button type="button" class="help-link" aria-label="Bereichshilfe Zahlungsdaten Verwendungszweck" data-section="zahlungsdaten">Bereichshilfe</button>.</p>
                         </div>
                     </div>
@@ -438,7 +440,7 @@
                     <div class="form-group">
                         <label for="vermerkt">Interner Vermerk</label>
                         <div class="input-with-help">
-                            <input type="text" id="vermerkt" class="form-control">
+                            <input type="text" id="vermerkt" class="form-control" autocomplete="off">
                             <button class="micro-help-btn" type="button" aria-label="Mikrohilfe Interner Vermerk" aria-expanded="false" aria-controls="microhelp-vermerkt"><svg viewBox="-4.2 -4.2 24.4 24.4" aria-hidden="true"><circle class="icon-focus" cx="8" cy="8" r="10.49"/><circle class="icon-ring" cx="8" cy="8" r="6.66"/><path class="icon-glyph" transform="matrix(.6175 0 0 .6175 3.06 3.06)" d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg></button>
                         </div>
                         <div class="inline-help" id="microhelp-vermerkt" tabindex="-1" hidden>
@@ -451,7 +453,7 @@
 
                     <div class="form-group">
                         <label for="kommentar">Kommentar (optional)<span class="visually-hidden"> zu den Zahlungsdaten</span></label>
-                        <textarea id="kommentar" class="form-control large-textarea" rows="3"></textarea>
+                        <textarea id="kommentar" class="form-control large-textarea" rows="3" autocomplete="off"></textarea>
                         <small class="char-counter">(1000 Zeichen)</small>
                     </div>
 
@@ -499,7 +501,7 @@
 
                     <div class="form-group">
                         <label for="kommentar-anhang">Kommentar (optional)<span class="visually-hidden"> zu den Anhängen</span></label>
-                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3"></textarea>
+                        <textarea id="kommentar-anhang" class="form-control large-textarea" rows="3" autocomplete="off"></textarea>
                         <small class="char-counter">(1000 Zeichen)</small>
                     </div>
 
@@ -531,5 +533,7 @@
     </div>
 
     <script src="script.js"></script>
+    <!-- Aufzeichnung für den Nutzertest: nur aktiv, wenn über testleitung.html geöffnet -->
+    <script src="testlauf.js"></script>
 </body>
 </html>

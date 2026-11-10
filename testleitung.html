@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testleiter</title>
+    <!-- Startseite für den Nutzertest der Bachelorarbeit. Wird vom Formular
+         nicht verlinkt. Enthält den ausgelosten Ausbalancierungsplan, startet
+         die Durchgänge mit den richtigen Parametern und exportiert die von
+         testlauf.js im Browser gespeicherten Daten. -->
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <style>
+        body { padding: 2rem; max-width: 70rem; margin: 0 auto; }
+        td, th { vertical-align: middle; }
+        .erledigt { color: #146c43; font-weight: 600; }
+        .offen { color: #6c757d; }
+        dialog { border: 1px solid #868e96; border-radius: .5rem; padding: 1.5rem; max-width: 32rem; }
+        dialog::backdrop { background: rgb(0 0 0 / .4); }
+        .aktionen { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+    <h1>Testleiter</h1>
+    <p>Nutzertest „Zahlung verausgaben“. Die Pilotperson wird nicht ausgewertet.</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Testperson</th>
+                <th scope="col">Abfolge</th>
+                <th scope="col">Durchgang 1</th>
+                <th scope="col">Durchgang 2</th>
+                <th scope="col"><span class="visually-hidden">Zurücksetzen</span></th>
+            </tr>
+        </thead>
+        <tbody id="plan"></tbody>
+    </table>
+
+    <div class="aktionen">
+        <button type="button" class="btn btn-primary" id="exportieren">Daten exportieren</button>
+        <button type="button" class="btn btn-outline-danger" id="alles-loeschen">Alle Daten löschen</button>
+    </div>
+    <p id="meldung" role="status" class="mt-3"></p>
+
+    <dialog id="start-dialog" aria-labelledby="start-titel">
+        <h2 id="start-titel" class="h4"></h2>
+        <ul id="start-liste"></ul>
+        <div class="aktionen">
+            <button type="button" class="btn btn-primary" id="start-oeffnen">Formular öffnen</button>
+            <button type="button" class="btn btn-secondary" id="start-abbrechen">Abbrechen</button>
+        </div>
+    </dialog>
+
+    <script>
+        const SPEICHER_SCHLUESSEL = 'nutzertest-daten';
+
+        // Abfolgen: [Variante, Szenario] für Durchgang 1 und 2.
+        const ABFOLGEN = {
+            1: [['Baseline', 'A'], ['Prototyp', 'B']],
+            2: [['Baseline', 'B'], ['Prototyp', 'A']],
+            3: [['Prototyp', 'A'], ['Baseline', 'B']],
+            4: [['Prototyp', 'B'], ['Baseline', 'A']],
+        };
+
+        // Ausbalancierungsplan, per Los in zwei Blöcken gezogen (05.11.2026):
+        // Block 1 → 3, 1, 2, 4 · Block 2 → 2, 1, 4, 3. Pilot fest Abfolge 1.
+        // Seit 09.11.2026 nur vier Testpersonen: Es gilt allein Block 1,
+        // jede Abfolge kommt genau einmal vor.
+        const PLAN = [
+            ['Pilot', 1],
+            ['1', 3], ['2', 1], ['3', 2], ['4', 4],
+        ];
+
+        const ladeDaten = () => JSON.parse(localStorage.getItem(SPEICHER_SCHLUESSEL) || '[]');
+        const speichereDaten = daten => localStorage.setItem(SPEICHER_SCHLUESSEL, JSON.stringify(daten));
+        const erledigt = (daten, tp, durchgang) =>
+            daten.some(d => d.tp === tp && d.durchgang === String(durchgang));
+        const melden = text => { document.getElementById('meldung').textContent = text; };
+
+        function zeichnePlan() {
+            const daten = ladeDaten();
+            const tbody = document.getElementById('plan');
+            tbody.innerHTML = '';
+
+            for (const [tp, abfolge] of PLAN) {
+                const zeile = tbody.insertRow();
+                const kopf = document.createElement('th');
+                kopf.scope = 'row';
+                kopf.textContent = tp;
+                zeile.append(kopf);
+                zeile.insertCell().textContent = abfolge;
+
+                ABFOLGEN[abfolge].forEach(([variante, szenario], i) => {
+                    const durchgang = i + 1;
+                    const fertig = erledigt(daten, tp, durchgang);
+                    const vorherFertig = durchgang === 1 || erledigt(daten, tp, 1);
+                    const zelle = zeile.insertCell();
+
+                    const text = document.createElement('div');
+                    text.textContent = `${variante}, Szenario ${szenario} – `;
+                    const status = document.createElement('span');
+                    status.className = fertig ? 'erledigt' : 'offen';
+                    status.textContent = fertig ? 'erledigt' : 'offen';
+                    text.append(status);
+                    zelle.append(text);
+
+                    if (!fertig) {
+                        const knopf = document.createElement('button');
+                        knopf.type = 'button';
+                        knopf.className = 'btn btn-sm btn-outline-primary mt-1';
+                        knopf.textContent = `Durchgang ${durchgang} starten`;
+                        knopf.setAttribute('aria-label', `Testperson ${tp}, Durchgang ${durchgang} starten`);
+                        knopf.disabled = !vorherFertig;
+                        knopf.addEventListener('click', () => starteDialog(tp, durchgang, variante, szenario));
+                        zelle.append(knopf);
+                    }
+                });
+
+                const zuruecksetzen = zeile.insertCell();
+                if (daten.some(d => d.tp === tp)) {
+                    const knopf = document.createElement('button');
+                    knopf.type = 'button';
+                    knopf.className = 'btn btn-sm btn-outline-danger';
+                    knopf.textContent = 'Zurücksetzen';
+                    knopf.setAttribute('aria-label', `Testperson ${tp} zurücksetzen`);
+                    knopf.addEventListener('click', () => {
+                        if (confirm(`Alle Daten von Testperson ${tp} löschen? Die Nummer ist danach wieder frei.`)) {
+                            speichereDaten(ladeDaten().filter(d => d.tp !== tp));
+                            zeichnePlan();
+                            melden(`Testperson ${tp} wurde zurückgesetzt.`);
+                        }
+                    });
+                    zuruecksetzen.append(knopf);
+                }
+            }
+        }
+
+        let startZiel = null;
+        const dialog = document.getElementById('start-dialog');
+
+        function starteDialog(tp, durchgang, variante, szenario) {
+            startZiel = { tp, durchgang, variante, szenario };
+            document.getElementById('start-titel').textContent =
+                `Testperson ${tp}, Durchgang ${durchgang}: ${variante}, Szenario ${szenario}`;
+            const liste = document.getElementById('start-liste');
+            liste.innerHTML = '';
+            for (const punkt of [
+                `Unterlagen Szenario ${szenario} bereitlegen.`,
+                'Formular öffnet sich in einem neuen Tab. Dort F11 drücken (Vollbild).',
+                'Nach der Dankesmeldung: F11, dann Tab mit Strg+W schließen.',
+            ]) {
+                const li = document.createElement('li');
+                li.textContent = punkt;
+                liste.append(li);
+            }
+            dialog.showModal();
+        }
+
+        document.getElementById('start-oeffnen').addEventListener('click', () => {
+            const { tp, durchgang, variante, szenario } = startZiel;
+            const params = new URLSearchParams({ tp, durchgang, szenario });
+            if (variante === 'Baseline') {
+                params.set('variante', 'baseline');
+            }
+            window.open(`index.html?${params}`, '_blank');
+            dialog.close();
+        });
+        document.getElementById('start-abbrechen').addEventListener('click', () => dialog.close());
+
+        // Excel-taugliche Zelle: Semikolon-CSV, Anführungszeichen verdoppelt.
+        // Rein numerische Werte (z. B. Steuer-ID 47036892816) und Werte, die
+        // mit = + - @ beginnen, werden als ="…" geschrieben – sonst zeigt
+        // Excel lange Zahlen gerundet/wissenschaftlich an oder wertet den
+        // Inhalt als Formel aus.
+        function zelle(wert) {
+            let text = String(wert ?? '');
+            const numerisch = /^[\d\s.,]+$/.test(text) && /\d/.test(text);
+            const formelartig = /^[=+\-@]/.test(text);
+            if ((numerisch || formelartig) && text.length < 250) {
+                text = `="${text.replace(/"/g, '""')}"`;
+            } else if (formelartig) {
+                text = ` ${text}`;
+            }
+            return `"${text.replace(/"/g, '""')}"`;
+        }
+
+        document.getElementById('exportieren').addEventListener('click', () => {
+            const daten = ladeDaten();
+            if (daten.length === 0) {
+                melden('Es sind noch keine Daten gespeichert.');
+                return;
+            }
+            const reihenfolge = PLAN.map(([tp]) => tp);
+            daten.sort((a, b) =>
+                reihenfolge.indexOf(a.tp) - reihenfolge.indexOf(b.tp) || a.durchgang.localeCompare(b.durchgang));
+
+            const abfolgeVon = Object.fromEntries(PLAN);
+            const kopf = ['Testperson', 'Abfolge', 'Durchgang', 'Szenario', 'Variante',
+                ...daten[0].felder.map(([name]) => name),
+                ...daten[0].hilfe.map(([name]) => `Hilfe sichtbar: ${name}`)];
+            const zeilen = daten.map(d => [
+                d.tp, abfolgeVon[d.tp], d.durchgang, d.szenario, d.variante,
+                ...d.felder.map(([, wert]) => wert),
+                ...d.hilfe.map(([, wert]) => wert),
+            ]);
+
+            // Kennungsspalten (Testperson bis Variante) bleiben unverändert,
+            // nur Feldwerte laufen durch zelle() mit Excel-Schutz. \uFEFF
+            // (BOM) sorgt dafür, dass Excel die Umlaute als UTF-8 liest.
+            const roh = wert => `"${String(wert).replace(/"/g, '""')}"`;
+            const csv = '\uFEFF' + [kopf.map(roh).join(';'),
+                ...zeilen.map(z => z.map((wert, i) => (i < 5 ? roh(wert) : zelle(wert))).join(';'))].join('\r\n');
+            const datum = new Date().toISOString().slice(0, 10);
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+            link.download = `nutzertest-daten-${datum}.csv`;
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+            melden(`${daten.length} Durchgänge exportiert.`);
+        });
+
+        document.getElementById('alles-loeschen').addEventListener('click', () => {
+            if (confirm('Wirklich ALLE gespeicherten Daten löschen?')
+                && confirm('Sicher? Vorher exportieren! Das lässt sich nicht rückgängig machen.')) {
+                localStorage.removeItem(SPEICHER_SCHLUESSEL);
+                zeichnePlan();
+                melden('Alle Daten wurden gelöscht.');
+            }
+        });
+
+        // Aktualisieren, sobald der Formular-Tab gespeichert hat bzw. die
+        // Startseite wieder in den Vordergrund kommt.
+        window.addEventListener('storage', zeichnePlan);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) zeichnePlan();
+        });
+
+        zeichnePlan();
+    </script>
+</body>
+</html>
