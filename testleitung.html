@@ -148,6 +148,9 @@
                 `Unterlagen Szenario ${szenario} bereitlegen.`,
                 'Formular öffnet sich in einem neuen Tab. Dort F11 drücken (Vollbild).',
                 'Nach der Dankesmeldung: F11, dann Tab mit Strg+W schließen.',
+                // Bogen 1 nach der Baseline, Bogen 2 nach dem Prototyp –
+                // hängt von der Fassung ab, nicht vom Durchgang.
+                `Danach den Fragebogen „Bogen ${variante === 'Baseline' ? 1 : 2}“ geben.`,
             ]) {
                 const li = document.createElement('li');
                 li.textContent = punkt;
